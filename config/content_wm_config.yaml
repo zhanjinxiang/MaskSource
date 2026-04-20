@@ -1,8 +1,7 @@
-# 生成内容版权保护子系统配置
+# 生成内容版权保护子系统（可运行参考后端）
 model:
-  name: "blip"
-  variant: "base"
-  device: "cuda"
+  name: "deterministic-local-sampler"
+  device: "cpu"
 
 payload:
   hash_alg: "sha256"
@@ -10,13 +9,18 @@ payload:
   timestamp_field: "timestamp"
 
 embedding:
-  seed_hash_alg: "md5"
+  seed_hash_alg: "sha256"
   secret_image: "data/secret_image.png"
-  entropy_thresholds: [0.5, 1.5, 3.0]
+  entropy_thresholds: [2.5, 4.0, 5.0]
   list_sizes: [2, 4, 8]
-  delta: 2.0
+  delta: 8.0
   max_lists: 8
+  payload_bits: 96
 
 verification:
-  match_threshold: 0.95
-  ber_threshold: 0.05
+  match_threshold: 0.85
+  ber_threshold: 0.15
+
+image_watermark:
+  strength: 18.0
+  redundancy: 9

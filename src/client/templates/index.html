@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MaskSource 本地演示</title>
+  <style>
+    :root{--bg:#071629;--panel:#102642;--line:#285077;--text:#edf8ff;--muted:#9fc2de;--cyan:#43dbe8;--green:#63efb0}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#06111f,#0a2240);color:var(--text);font-family:Inter,"Microsoft YaHei",sans-serif}
+    main{max-width:1060px;margin:auto;padding:46px 24px 80px}h1{font-size:48px;margin:0 0 8px}h2{margin-top:0}.lead{color:var(--muted);line-height:1.7;max-width:760px}
+    .badge{display:inline-block;color:var(--cyan);border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:12px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:28px}
+    .card{background:rgba(16,38,66,.94);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 18px 40px rgba(0,0,0,.2)}
+    button,.button{display:inline-block;background:linear-gradient(90deg,var(--cyan),var(--green));color:#06111f;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;text-decoration:none}pre{white-space:pre-wrap;word-break:break-word;background:#06111f;border-radius:14px;padding:16px;min-height:120px;color:#caeaff;max-height:430px;overflow:auto}
+    label{display:block;color:var(--muted);font-size:13px;margin:10px 0 5px}input,textarea{width:100%;border:1px solid var(--line);border-radius:10px;background:#071629;color:var(--text);padding:10px}textarea{min-height:100px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .ok{color:var(--green)}.note{border-left:3px solid var(--cyan);padding-left:14px;color:var(--muted);margin-top:24px}@media(max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:38px}}
+  </style>
+</head>
+<body><main>
+  <span class="badge">RUNNABLE REFERENCE IMPLEMENTATION</span>
+  <h1>MaskSource</h1>
+  <p class="lead">面向视觉语言模型的“双盾双溯源”本地演示：提示-图像双密钥模型验证、熵引导多列表文本水印、DWT图像水印与证据记录。</p>
+  <div class="grid">
+    <section class="card"><h2>一键端到端验证</h2><p class="lead">自动生成匿名演示资产，依次运行模型盾、内容盾、图像水印与质量检测。</p><button id="run">运行完整演示</button></section>
+    <section class="card"><h2>运行状态</h2><p id="status" class="lead">等待运行</p><p class="lead">健康检查：<span id="health">检查中</span></p></section>
+    <section class="card"><h2>嵌入文本水印</h2><form id="embedForm"><label>匿名身份标识</label><input name="identity" value="anonymous-user"><label>时间戳/会话号</label><input name="timestamp" value="session-01"><label>秘密图像</label><input name="secret_image" type="file" accept="image/*" required><div class="actions"><button>生成水印文本</button></div></form></section>
+    <section class="card"><h2>验证文本水印</h2><form id="verifyForm"><label>匿名身份标识</label><input name="identity" value="anonymous-user"><label>时间戳/会话号</label><input name="timestamp" value="session-01"><label>待验证文本</label><textarea name="text" id="verifyText" required></textarea><label>同一秘密图像</label><input name="secret_image" type="file" accept="image/*" required><div class="actions"><button>提取并验证</button></div></form></section>
+  </div>
+  <section class="card" style="margin-top:18px"><h2>验证结果</h2><pre id="output">选择一项操作查看结果。</pre><div class="actions"><a class="button" href="/api/evidence/export">导出证据 JSON</a></div></section>
+  <p class="note">本版本用于验证软件流程和算法接口，不宣称重新复现作品报告中的大模型训练实验。报告中的历史指标与本机演示结果在README中分开标注。</p>
+</main>
+<script>
+const output=document.getElementById('output'),statusNode=document.getElementById('status');
+fetch('/api/health').then(r=>r.json()).then(x=>{document.getElementById('health').textContent=x.status;document.getElementById('health').className='ok'}).catch(()=>document.getElementById('health').textContent='失败');
+document.getElementById('run').onclick=async()=>{statusNode.textContent='正在执行...';output.textContent='';try{const r=await fetch('/api/demo/run',{method:'POST'});const x=await r.json();output.textContent=JSON.stringify(x,null,2);statusNode.textContent=x.status==='ok'?'全部模块执行完成':'执行异常';statusNode.className=x.status==='ok'?'ok':'lead'}catch(e){statusNode.textContent='执行失败';output.textContent=String(e)}};
+async function submitForm(event,url){event.preventDefault();statusNode.textContent='正在处理...';try{const r=await fetch(url,{method:'POST',body:new FormData(event.target)});const x=await r.json();output.textContent=JSON.stringify(x,null,2);if(x.text)document.getElementById('verifyText').value=x.text;statusNode.textContent=r.ok?'操作完成':'操作失败';statusNode.className=r.ok?'ok':'lead'}catch(e){statusNode.textContent='操作失败';output.textContent=String(e)}}
+document.getElementById('embedForm').onsubmit=e=>submitForm(e,'/api/content/embed');
+document.getElementById('verifyForm').onsubmit=e=>submitForm(e,'/api/content/verify');
+</script></body></html>

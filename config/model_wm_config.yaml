@@ -1,30 +1,15 @@
-# 模型版权保护子系统配置
+# 模型版权保护子系统（可运行参考后端）
 model:
-  name: "ViT-B/32"
-  pretrained: "openai"
-  device: "cuda"
+  name: "local-model-artifact"
+  device: "cpu"
 
 trigger:
   image_secret: "data/secret_image.png"
-  dwt_wavelet: "haar"
-  dwt_level: 2
-  inv_net_channels: 64
-  inv_net_blocks: 3
-
-training:
-  epochs: 50
-  batch_size: 32
-  lr: 0.001
-  optimizer: "sgd"
-  scheduler: "cosine"
-  mgda_enabled: true
-
-loss:
-  utility_weight: 1.0
-  multi_trigger_weight: 1.0
-  single_trigger_weight: 0.5
+  image_hash: "perceptual-plus-colour"
+  image_tolerance: 0.12
+  prompt_hash: "hmac-sha256"
 
 verification:
-  wsr_threshold: 0.95
-  ssim_threshold: 0.90
-  hamming_threshold: 0.10
+  require_prompt_key: true
+  require_image_key: true
+  require_model_digest: true
