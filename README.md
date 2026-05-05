@@ -208,12 +208,13 @@ MaskSource/
 │   ├── css/                       # 样式文件
 │   ├── js/                        # 交互脚本
 │   └── assets/                    # 图片与静态资源
-│       └── screenshots/           # 【效果图展示位置】
-│           ├── homepage.png       # 系统首页界面
-│           ├── model_verify.png   # 模型水印验证界面
-│           ├── content_verify.png # 内容水印验证界面
-│           ├── architecture.png   # 系统架构图
-│           └── results.png        # 实验结果图表
+│       └── screenshots/           # 作品效果图
+│           ├── homepage.png       # 系统首页
+│           ├── login.png          # 登录界面
+│           ├── dashboard_home.png # 后台控制台
+│           ├── watermark_verify.png # 水印验证（核心功能）
+│           ├── model_management.png # 模型管理
+│           └── security_analysis.png # 安全分析
 │
 ├── frontend/                      # 假前端演示代码（Web 客户端）
 │   ├── public/
@@ -282,15 +283,16 @@ MaskSource/
 
 ## 🖼️ 效果图展示
 
-> 以下为本系统核心界面截图（由另一位团队成员负责生成，后续插入）：
+以下为 MaskSource 系统核心界面截图：
 
 | 界面 | 预览 | 说明 |
 |------|------|------|
-| 系统首页 | ![首页](docs/assets/screenshots/homepage.png) | 用户端主界面，集成对话、模型管理、水印验证 |
-| 模型水印验证 | ![模型验证](docs/assets/screenshots/model_verify.png) | 上传后门图像与提示语，验证模型所有权 |
-| 内容水印验证 | ![内容验证](docs/assets/screenshots/content_verify.png) | 输入可疑文本，提取并可视化水印分布 |
-| 系统架构 | ![架构图](docs/assets/screenshots/architecture.png) | 双盾双溯源全链路架构总览 |
-| 实验结果 | ![结果图](docs/assets/screenshots/results.png) | 鲁棒性、容量、准确率等综合性能图表 |
+| 系统首页 | ![首页](docs/assets/screenshots/homepage.png) | 项目官网首页，展示核心能力与应用场景 |
+| 登录界面 | ![登录](docs/assets/screenshots/login.png) | 用户登录与身份选择（User / Admin） |
+| 后台控制台 | ![控制台](docs/assets/screenshots/dashboard_home.png) | 首页仪表盘，统计检测量、版权异常、受保护模型与活跃用户 |
+| 水印验证 | ![水印验证](docs/assets/screenshots/watermark_verify.png) | 核心功能：模型版权验证 + 生成内容溯源，体现「双盾双溯源」 |
+| 模型管理 | ![模型管理](docs/assets/screenshots/model_management.png) | VLM 模型列表、水印状态、检测置信度与操作 |
+| 安全分析 | ![安全分析](docs/assets/screenshots/security_analysis.png) | 水印性能指标与攻击测试（微调/剪枝/提示注入/改写） |
 
 ---
 

@@ -1,366 +1,472 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MaskSource | 双盾双溯源 VLM 版权保护体系</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MaskSource | 基于「双盾双溯源」的视觉语言模型全链路版权保护体系</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Inter", "Microsoft YaHei", Arial, sans-serif; }
+    :root {
+      --bg: #071629; --panel: rgba(15, 35, 67, 0.82); --panel-soft: rgba(25, 58, 103, 0.55);
+      --line: rgba(109, 183, 255, 0.22); --text: #eaf6ff; --muted: #8fb6d8;
+      --blue: #48a7ff; --cyan: #39e2ff; --green: #57f5b1; --danger: #ff7189; --warning: #ffd166;
+      --shadow: 0 20px 60px rgba(0,0,0,0.32);
+    }
+    body {
+      min-height: 100vh; color: var(--text);
+      background: radial-gradient(circle at 20% 10%, rgba(57,226,255,0.18), transparent 26%),
+        radial-gradient(circle at 80% 20%, rgba(72,167,255,0.20), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(87,245,177,0.10), transparent 35%),
+        linear-gradient(135deg, #04101f 0%, #071629 50%, #0d2545 100%);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.15));
+      pointer-events: none;
+    }
+    .official-site { position: relative; z-index: 1; }
+    .site-nav {
+      position: sticky; top: 0; z-index: 20; display: flex; align-items: center;
+      justify-content: space-between; padding: 18px 7vw;
+      background: rgba(5, 18, 34, 0.72); border-bottom: 1px solid var(--line); backdrop-filter: blur(18px);
+    }
+    .site-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; }
+    .site-links { display: flex; align-items: center; gap: 30px; }
+    .site-links a, .site-actions a { color: var(--muted); text-decoration: none; font-weight: 650; transition: 0.2s ease; }
+    .site-links a:hover { color: var(--cyan); }
+    .site-hero { min-height: 88vh; display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: center; gap: 56px; padding: 70px 7vw 80px; }
+    .site-title { margin-top: 20px; font-size: clamp(56px, 8vw, 110px); line-height: 0.9; letter-spacing: -0.075em;
+      background: linear-gradient(90deg, #ffffff, var(--cyan), var(--blue)); -webkit-background-clip: text; color: transparent; }
+    .site-subtitle { margin-top: 18px; max-width: 760px; font-size: clamp(24px, 3vw, 44px); line-height: 1.15; letter-spacing: -0.045em; }
+    .site-desc { margin-top: 24px; max-width: 760px; color: var(--muted); font-size: 17px; line-height: 1.9; }
+    .site-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+    .hero-visual { position: relative; min-height: 520px; display: grid; place-items: center; }
+    .orbit-card { width: min(430px, 90%); border: 1px solid var(--line); border-radius: 32px;
+      background: linear-gradient(180deg, rgba(15,35,67,0.94), rgba(8,22,42,0.88));
+      box-shadow: var(--shadow), 0 0 80px rgba(57,226,255,0.12); padding: 34px; backdrop-filter: blur(18px); }
+    .orbit-card h3 { margin-top: 18px; font-size: 30px; letter-spacing: -0.04em; }
+    .orbit-card p { margin-top: 10px; color: var(--muted); }
+    .metric-row { display: flex; justify-content: space-between; margin-top: 28px; color: #cde9ff; }
+    .floating-card { position: absolute; padding: 13px 16px; border-radius: 18px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.07); color: #dff7ff; box-shadow: 0 16px 40px rgba(0,0,0,0.22); }
+    .f1 { top: 80px; left: 42px; } .f2 { top: 120px; right: 38px; } .f3 { bottom: 80px; left: 90px; }
+    .site-section { padding: 86px 7vw; border-top: 1px solid rgba(109, 183, 255, 0.12); }
+    .section-head { max-width: 920px; margin-bottom: 30px; }
+    .section-head h2 { margin-top: 16px; font-size: clamp(30px, 4vw, 56px); letter-spacing: -0.055em; }
+    .section-head p { margin-top: 16px; color: var(--muted); line-height: 1.85; font-size: 16px; }
+    .architecture-box { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px; }
+    .arch-block { min-height: 180px; padding: 28px; border-radius: 26px; border: 1px solid var(--line); background: var(--panel); }
+    .arch-block h3 { margin-bottom: 14px; }
+    .arch-block p { color: var(--muted); line-height: 1.85; }
+    .arch-connector { padding: 16px 18px; border-radius: 999px; background: linear-gradient(90deg, var(--blue), var(--cyan));
+      color: #03101d; font-weight: 900; white-space: nowrap; }
+    .login-screen { min-height: 100vh; display: grid; grid-template-columns: 1.08fr 0.92fr; align-items: center; gap: 48px; padding: 56px 8vw; }
+    .brand-block { position: relative; z-index: 1; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line);
+      border-radius: 999px; background: rgba(57, 226, 255, 0.08); color: var(--cyan); font-size: 13px; letter-spacing: 0.08em; }
+    .brand-title { margin-top: 24px; font-size: clamp(42px, 7vw, 86px); line-height: 0.95; letter-spacing: -0.06em; }
+    .brand-title span { background: linear-gradient(90deg, var(--cyan), var(--blue), var(--green)); -webkit-background-clip: text; color: transparent; }
+    .brand-desc { margin-top: 24px; max-width: 680px; color: var(--muted); font-size: 18px; line-height: 1.85; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .hero-tags span { padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,0.04); color: #c8e6ff; font-size: 14px; }
+    .login-card { position: relative; z-index: 1; padding: 34px; border: 1px solid var(--line); border-radius: 28px;
+      background: linear-gradient(180deg, rgba(15,35,67,0.92), rgba(8,22,42,0.88)); box-shadow: var(--shadow); backdrop-filter: blur(16px); }
+    .login-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; padding: 6px; border-radius: 18px; background: rgba(255,255,255,0.05); }
+    .login-tabs button, .role-tabs button, .btn { border: none; cursor: pointer; color: var(--text); transition: 0.25s ease; }
+    .login-tabs button { padding: 12px; border-radius: 14px; background: transparent; color: var(--muted); }
+    .login-tabs button.active { background: linear-gradient(90deg, var(--blue), var(--cyan)); color: #04101f; font-weight: 800; }
+    .form-title { font-size: 26px; margin-bottom: 8px; }
+    .form-subtitle { color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; margin-bottom: 8px; color: #cde9ff; font-size: 14px; }
+    input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 14px; background: rgba(5,18,34,0.68);
+      color: var(--text); padding: 13px 14px; outline: none; transition: 0.2s ease; }
+    textarea { min-height: 132px; resize: vertical; line-height: 1.7; }
+    input:focus, select:focus, textarea:focus { border-color: rgba(57,226,255,0.76); box-shadow: 0 0 0 4px rgba(57,226,255,0.08); }
+    .role-tabs { display: flex; gap: 10px; margin: 12px 0 22px; }
+    .role-tabs button { flex: 1; padding: 11px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid transparent; color: var(--muted); }
+    .role-tabs button.active { color: var(--cyan); border-color: var(--line); background: rgba(57,226,255,0.08); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px;
+      border-radius: 14px; font-weight: 800; background: linear-gradient(90deg, var(--blue), var(--cyan)); color: #03101d;
+      box-shadow: 0 12px 26px rgba(57,226,255,0.18); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(57,226,255,0.26); }
+    .btn.secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--line); box-shadow: none; }
+    .btn.danger { background: rgba(255,113,137,0.12); color: #ffb5c0; border: 1px solid rgba(255,113,137,0.28); box-shadow: none; }
+    .dashboard { display: none; min-height: 100vh; }
+    .sidebar { position: fixed; inset: 0 auto 0 0; width: 260px; padding: 26px 18px; background: rgba(5,18,34,0.78);
+      border-right: 1px solid var(--line); backdrop-filter: blur(18px); z-index: 10; }
+    .logo { display: flex; align-items: center; gap: 12px; padding: 10px 12px 26px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+    .logo-mark { width: 40px; height: 40px; border-radius: 14px; background: linear-gradient(135deg, var(--cyan), var(--blue));
+      box-shadow: 0 0 30px rgba(57,226,255,0.28); display: grid; place-items: center; color: #04101f; font-weight: 900; }
+    .logo strong { font-size: 20px; letter-spacing: -0.03em; }
+    .logo small { display: block; color: var(--muted); margin-top: 2px; }
+    .nav { display: grid; gap: 8px; }
+    .nav button { border: none; text-align: left; padding: 13px 14px; border-radius: 14px; color: var(--muted); background: transparent;
+      cursor: pointer; transition: 0.2s ease; font-weight: 650; }
+    .nav button:hover, .nav button.active { color: var(--text); background: rgba(72,167,255,0.14); }
+    .main { margin-left: 260px; padding: 24px 32px 52px; position: relative; z-index: 1; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 28px; }
+    .search { max-width: 520px; }
+    .user-chip { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border: 1px solid var(--line);
+      border-radius: 999px; background: rgba(255,255,255,0.05); color: #cfeaff; }
+    .avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--cyan));
+      color: #04101f; display: grid; place-items: center; font-weight: 900; }
+    .page { display: none; animation: fadeIn 0.26s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .page-title { font-size: 34px; letter-spacing: -0.04em; margin-bottom: 8px; }
+    .page-desc { color: var(--muted); line-height: 1.7; max-width: 850px; }
+    .grid { display: grid; gap: 18px; }
+    .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .card { border: 1px solid var(--line); border-radius: 24px; background: var(--panel); box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+      backdrop-filter: blur(18px); padding: 22px; overflow: hidden; position: relative; }
+    .card::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 100% 0%, rgba(57,226,255,0.08), transparent 35%); pointer-events: none; }
+    .stat-label { color: var(--muted); margin-bottom: 10px; font-size: 14px; }
+    .stat-value { font-size: 32px; font-weight: 900; letter-spacing: -0.04em; }
+    .stat-note { color: var(--green); margin-top: 8px; font-size: 13px; }
+    .module-card h3, .card h3 { margin-bottom: 10px; font-size: 19px; }
+    .module-card p, .card p, .list-item p { color: var(--muted); line-height: 1.7; font-size: 14px; }
+    .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 15px; }
+    .pill { padding: 7px 10px; border-radius: 999px; background: rgba(57,226,255,0.08); border: 1px solid rgba(57,226,255,0.16); color: #b9efff; font-size: 12px; }
+    .workflow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; }
+    .step { padding: 18px 14px; border-radius: 18px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); text-align: center; min-height: 96px; }
+    .step strong { display: block; color: var(--cyan); margin-bottom: 8px; }
+    .step span { font-size: 13px; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; }
+    th, td { padding: 15px 14px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+    th { color: #cceaff; background: rgba(255,255,255,0.05); }
+    td { color: var(--muted); }
+    .status { display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+    .status.ok { color: var(--green); background: rgba(87,245,177,0.1); }
+    .status.warn { color: var(--warning); background: rgba(255,209,102,0.1); }
+    .status.off { color: var(--danger); background: rgba(255,113,137,0.1); }
+    .panel-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+    .upload-box { display: grid; place-items: center; min-height: 190px; border: 1px dashed rgba(57,226,255,0.42);
+      border-radius: 20px; background: rgba(57,226,255,0.04); text-align: center; color: var(--muted); padding: 20px; }
+    .result-box { padding: 18px; border-radius: 18px; background: rgba(87,245,177,0.08); border: 1px solid rgba(87,245,177,0.25); color: #c8ffe8; line-height: 1.8; }
+    .bar { height: 10px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+    .bar span { display: block; height: 100%; width: var(--w); background: linear-gradient(90deg, var(--blue), var(--cyan), var(--green)); border-radius: inherit; }
+    .chart-lines { display: grid; gap: 16px; }
+    .chart-line label { display: flex; justify-content: space-between; color: #cde9ff; font-size: 14px; }
+    .footer-note { margin-top: 30px; padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.04); border: 1px solid var(--line); color: var(--muted); line-height: 1.7; }
+    @media (max-width: 1080px) {
+      .site-hero, .architecture-box, .login-screen { grid-template-columns: 1fr; }
+      .site-links { display: none; } .hero-visual { min-height: 420px; }
+      .sidebar { position: static; width: 100%; } .main { margin-left: 0; }
+      .grid.cols-4, .grid.cols-3, .grid.cols-2, .workflow { grid-template-columns: 1fr; }
+      .topbar, .page-header { flex-direction: column; align-items: stretch; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="container nav-container">
-      <a href="#" class="logo">
-        <span class="logo-icon">🛡️</span>
-        <span class="logo-text">MaskSource</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="#abstract">简介</a></li>
-        <li><a href="#features">特性</a></li>
-        <li><a href="#architecture">架构</a></li>
-        <li><a href="#results">实验</a></li>
-        <li><a href="#demo">演示</a></li>
-        <li><a href="#contact">联系</a></li>
-      </ul>
-      <a href="https://github.com/your-team/MaskSource" class="btn btn-outline" target="_blank">GitHub</a>
-    </div>
-  </nav>
+  <!-- 1. 官方首页 -->
+  <section class="official-site" id="officialSite">
+    <nav class="site-nav">
+      <div class="site-logo"><div class="logo-mark">M</div><strong>MaskSource</strong></div>
+      <div class="site-links">
+        <a href="#problem">项目背景</a>
+        <a href="#features">核心能力</a>
+        <a href="#architecture">系统架构</a>
+        <a href="#scenarios">应用场景</a>
+      </div>
+      <a class="btn secondary" href="https://github.com/your-team/MaskSource" target="_blank">GitHub</a>
+      <button class="btn" onclick="openLogin()" style="margin-left:10px">登录 / 使用</button>
+    </nav>
 
-  <!-- Hero Section -->
-  <header class="hero">
-    <div class="container">
-      <div class="hero-badge">中国大学生计算机设计大赛参赛作品</div>
-      <h1 class="hero-title">
-        MaskSource
-        <span class="hero-subtitle">基于「双盾双溯源」的视觉语言模型<br>全链路版权保护体系</span>
-      </h1>
-      <p class="hero-desc">
-        面向视觉语言模型（VLM）的版权保护与溯源系统。通过「提示-图像双密钥联合触发」与「熵引导多比特文本水印」两大核心机制，
-        同时解决<strong>模型所有权证明</strong>与<strong>生成内容来源追踪</strong>问题，构建从模型到内容的闭环保护链路。
+    <section class="site-hero">
+      <div class="hero-left">
+        <div class="badge">VLM COPYRIGHT PROTECTION</div>
+        <h1 class="site-title">MaskSource</h1>
+        <h2 class="site-subtitle">基于「双盾双溯源」的视觉语言模型全链路版权保护体系</h2>
+        <p class="site-desc">
+          面向视觉语言模型的模型资产保护与生成内容溯源需求，MaskSource 通过「提示-图像」双密钥后门与熵自适应多比特文本水印，实现模型版权验证、生成内容追踪与高鲁棒安全防护。
+        </p>
+        <div class="site-actions">
+          <button class="btn" onclick="openLogin()">立即体验</button>
+          <a class="btn secondary" href="#architecture">查看系统架构</a>
+        </div>
+        <div class="hero-tags">
+          <span>双密钥后门</span><span>模型版权保护</span><span>内容水印溯源</span><span>高容量身份追踪</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="orbit-card main-card">
+          <span class="status ok">Protected</span>
+          <h3>全链路水印防护</h3>
+          <p>Model Shield + Content Trace</p>
+          <div class="metric-row"><span>验证置信度</span><strong>98.7%</strong></div>
+          <div class="bar"><span style="--w:98.7%"></span></div>
+        </div>
+        <div class="floating-card f1">Prompt Key</div>
+        <div class="floating-card f2">Image Key</div>
+        <div class="floating-card f3">User Trace ID</div>
+      </div>
+    </section>
+
+    <section class="site-section" id="problem">
+      <div class="section-head">
+        <span class="badge">WHY MASKSOURCE</span>
+        <h2>解决视觉语言模型的版权与溯源难题</h2>
+        <p>VLM 在智能问答、图像分析、创意内容生成等场景中快速应用，但也带来了模型窃取、生成内容盗用、版权归属不清等问题。</p>
+      </div>
+      <div class="grid cols-3">
+        <div class="card"><h3>模型资产易被窃取</h3><p>高价值模型可能被复制、微调或盗用，需要可远程验证的所有权证明。</p></div>
+        <div class="card"><h3>生成内容难以追责</h3><p>AI生成图文在网络传播后，来源不透明，侵权追责和责任定位困难。</p></div>
+        <div class="card"><h3>传统水印适配不足</h3><p>单模态水印难以适配跨模态交互，容易损害语义对齐或被攻击移除。</p></div>
+      </div>
+    </section>
+
+    <section class="site-section" id="features">
+      <div class="section-head">
+        <span class="badge">CORE FEATURES</span>
+        <h2>双盾双溯源：模型与内容双层防护</h2>
+      </div>
+      <div class="grid cols-4">
+        <div class="card"><h3>模型水印生成</h3><p>利用 DWT 与可逆网络生成视觉无损水印图像，并构造身份编码触发文本。</p></div>
+        <div class="card"><h3>双密钥嵌入</h3><p>通过提示-图像联合触发机制，降低单触发器被伪造或绕过的风险。</p></div>
+        <div class="card"><h3>多比特文本水印</h3><p>将用户ID、时间戳等信息编码为复杂二进制序列，实现精准身份追踪。</p></div>
+        <div class="card"><h3>熵自适应策略</h3><p>在高熵生成区域动态嵌入水印，在保证文本质量的同时提升容量。</p></div>
+      </div>
+    </section>
+
+    <section class="site-section" id="architecture">
+      <div class="section-head">
+        <span class="badge">ARCHITECTURE</span>
+        <h2>系统架构</h2>
+        <p>平台由模型版权保护子系统与生成内容版权保护子系统构成，分别完成模型水印生成/嵌入/验证和内容身份生成/嵌入/提取。</p>
+      </div>
+      <div class="architecture-box">
+        <div class="arch-block"><h3>模型版权保护子系统</h3><p>水印生成 &rarr; 水印嵌入 &rarr; 黑盒版权验证 &rarr; 图文双模态溯源</p></div>
+        <div class="arch-connector">双盾双溯源</div>
+        <div class="arch-block"><h3>生成内容版权保护子系统</h3><p>身份序列生成 &rarr; 熵自适应嵌入 &rarr; 多列表编码 &rarr; 水印验证与序列提取</p></div>
+      </div>
+    </section>
+
+    <section class="site-section" id="scenarios">
+      <div class="section-head">
+        <span class="badge">APPLICATIONS</span>
+        <h2>应用场景</h2>
+      </div>
+      <div class="grid cols-3">
+        <div class="card"><h3>AI模型研发企业</h3><p>保护私有VLM模型资产，降低模型被非法复制后的维权成本。</p></div>
+        <div class="card"><h3>AIGC内容平台</h3><p>为生成内容嵌入用户身份标识，支持内容归属确认与风险审计。</p></div>
+        <div class="card"><h3>可信内容治理</h3><p>辅助虚假信息源头追踪、数字资产真伪验证和责任定位。</p></div>
+      </div>
+      <div style="text-align:center;margin-top:34px;"><button class="btn" onclick="openLogin()">进入系统体验</button></div>
+    </section>
+  </section>
+
+  <!-- 2. 登录页 -->
+  <section class="login-screen" id="loginScreen" style="display:none;">
+    <div class="brand-block">
+      <div class="badge">VLM COPYRIGHT PROTECTION PLATFORM</div>
+      <h1 class="brand-title">Mask<span>Source</span></h1>
+      <p class="brand-desc">
+        基于「双盾双溯源」的视觉语言模型全链路版权保护体系，面向模型资产保护、生成内容溯源与多模态水印验证场景，构建安全、隐蔽、可追踪的一体化平台。
       </p>
-      <div class="hero-actions">
-        <a href="#demo" class="btn btn-primary">🚀 在线演示</a>
-        <a href="https://github.com/your-team/MaskSource" class="btn btn-secondary" target="_blank">📦 代码仓库</a>
-      </div>
-      <div class="hero-meta">
-        <span class="meta-item">🔒 双密钥联合触发</span>
-        <span class="meta-item">📊 2.0+ bits/token</span>
-        <span class="meta-item">🎯 WSR ≥ 97%</span>
-        <span class="meta-item">🧠 熵引导自适应</span>
+      <div class="hero-tags">
+        <span>提示-图像双密钥后门</span><span>高容量多比特文本水印</span><span>模型版权验证</span><span>生成内容身份追踪</span>
       </div>
     </div>
-  </header>
-
-  <!-- Abstract -->
-  <section id="abstract" class="section section-light">
-    <div class="container">
-      <h2 class="section-title">📄 作品摘要</h2>
-      <div class="abstract-card">
-        <p>
-          视觉语言模型凭借其强大的跨模态理解与生成能力，在图像描述生成、视觉问答、创意内容生成等领域展现出巨大潜力。
-          然而，模型窃取、生成内容盗用等侵权行为日益频繁，严重威胁模型安全与内容可信性。
-        </p>
-        <p>
-          本作品提出一种面向视觉语言模型的版权保护与溯源方案。该方案通过融合后门与高容量水印技术，构建了模型与生成内容的双层防护体系：
-          在<strong>模型所有权验证</strong>上，我们利用「提示-图像」双密钥后门机制，其跨模态的联合触发条件有效规避了单一触发器的安全瓶颈；
-          在<strong>生成内容方面</strong>，则通过自适应多比特水印技术实现精准溯源。
-        </p>
-        <p>
-          实验表明，模型版权保护系统在微调和结构化剪枝等严苛场景下 WSR 稳定在 <strong>97% 以上</strong>；
-          生成内容版权保护系统实现了嵌入容量、检测准确率与文本质量的协同提升，容量达到 <strong>2.0+ bits/token</strong>，
-          困惑度降至 <strong>个位数区间</strong>。
-        </p>
+    <div class="login-card">
+      <div class="login-tabs">
+        <button class="active" onclick="switchAuth('login')">登录</button>
+        <button onclick="switchAuth('register')">注册</button>
+      </div>
+      <div id="loginForm">
+        <h2 class="form-title">系统登录</h2>
+        <p class="form-subtitle">请选择用户身份，进入 MaskSource 版权保护控制台。</p>
+        <div class="role-tabs">
+          <button class="active">User</button>
+          <button>Admin</button>
+        </div>
+        <div class="field"><label>用户名</label><input value="egnever" /></div>
+        <div class="field"><label>密码</label><input type="password" value="123456" /></div>
+        <button class="btn" style="width:100%" onclick="enterSystem()">进入系统</button>
+      </div>
+      <div id="registerForm" style="display:none;">
+        <h2 class="form-title">账号注册</h2>
+        <p class="form-subtitle">创建平台账号，用于模型管理、水印验证与生成内容追踪。</p>
+        <div class="field"><label>用户名</label><input placeholder="请输入用户名" /></div>
+        <div class="field"><label>密码</label><input type="password" placeholder="请输入密码" /></div>
+        <div class="field"><label>确认密码</label><input type="password" placeholder="请再次输入密码" /></div>
+        <button class="btn" style="width:100%">立即注册</button>
       </div>
     </div>
   </section>
 
-  <!-- Features -->
-  <section id="features" class="section">
-    <div class="container">
-      <h2 class="section-title">✨ 核心特性</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🔐</div>
-          <h3>双密钥联合触发</h3>
-          <p>提示-图像双模态同时满足方可激活水印，单一条件无法触发，破解难度指数级提升。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🧬</div>
-          <h3>熵引导自适应嵌入</h3>
-          <p>根据生成位置的不确定性动态调整嵌入强度，低熵区弱嵌入保自然度，高熵区强嵌入提容量。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📈</div>
-          <h3>多列表高容量编码</h3>
-          <p>2/4/8 动态列表映射，单位位置编码 1~3 比特，容量突破传统单比特瓶颈至 2.0+ bits/token。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🛡️</div>
-          <h3>FGSM 对抗鲁棒训练</h3>
-          <p>高频域对抗样本持续训练可逆网络，秘密恢复误差 MSE 较原始网络下降超 70%。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">⚖️</div>
-          <h3>MGDA 多目标协同</h3>
-          <p>动态求解共享更新方向，协调效用损失、多触发器损失与单触发器约束，训练稳定高效。</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔍</div>
-          <h3>确定性身份序列恢复</h3>
-          <p>从「统计有无水印」升级为「精准恢复身份序列」，支持用户级内容追踪与可量化取证。</p>
-        </div>
+  <!-- 3. 后台仪表盘 -->
+  <section class="dashboard" id="dashboard">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-mark">M</div><div><strong>MaskSource</strong><small>版权保护后台</small></div></div>
+      <div class="nav">
+        <button class="active" onclick="showPage('home', this)">首页控制台</button>
+        <button onclick="showPage('dialog', this)">多模态交互</button>
+        <button onclick="showPage('models', this)">模型管理</button>
+        <button onclick="showPage('verify', this)">水印验证</button>
+        <button onclick="showPage('analysis', this)">安全分析</button>
+        <button onclick="showPage('settings', this)">系统设置</button>
       </div>
-    </div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <input class="search" placeholder="搜索模型、任务、水印ID或用户身份..." />
+        <div class="user-chip"><div class="avatar">E</div> egnever &middot; User</div>
+      </div>
+
+      <!-- 首页控制台 -->
+      <section class="page active" id="home">
+        <div class="page-header">
+          <div><h2 class="page-title">VLM版权保护系统</h2><p class="page-desc">围绕模型版权保护子系统与生成内容版权保护子系统，提供水印嵌入、模型验证、内容溯源与安全分析能力。</p></div>
+          <button class="btn">启动快速检测</button>
+        </div>
+        <div class="grid cols-4">
+          <div class="card"><div class="stat-label">今日检测</div><div class="stat-value">128</div><div class="stat-note">较昨日 +18.4%</div></div>
+          <div class="card"><div class="stat-label">版权异常</div><div class="stat-value">3</div><div class="stat-note" style="color:var(--warning)">等待复核</div></div>
+          <div class="card"><div class="stat-label">受保护模型</div><div class="stat-value">42</div><div class="stat-note">水印覆盖率 91%</div></div>
+          <div class="card"><div class="stat-label">活跃用户</div><div class="stat-value">15</div><div class="stat-note">身份水印已同步</div></div>
+        </div>
+        <div class="grid cols-3" style="margin-top:18px;">
+          <div class="card module-card"><h3>模型版权保护</h3><p>通过提示-图像双密钥后门机制，实现模型所有权验证与跨模态水印激活。</p><div class="pill-row"><span class="pill">水印图像</span><span class="pill">水印文本</span><span class="pill">黑盒验证</span></div></div>
+          <div class="card module-card"><h3>生成内容溯源</h3><p>在文本生成过程中动态嵌入用户ID、时间戳等身份信息，实现高容量追踪。</p><div class="pill-row"><span class="pill">多比特编码</span><span class="pill">身份序列</span><span class="pill">水印提取</span></div></div>
+          <div class="card module-card"><h3>安全鲁棒分析</h3><p>模拟微调、剪枝与提示注入等攻击，评估水印存活率和检测置信度。</p><div class="pill-row"><span class="pill">微调攻击</span><span class="pill">结构剪枝</span><span class="pill">提示注入</span></div></div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <h3>系统流程</h3>
+          <div class="workflow">
+            <div class="step"><strong>01</strong><span>用户输入图像/文本</span></div>
+            <div class="step"><strong>02</strong><span>模型生成内容</span></div>
+            <div class="step"><strong>03</strong><span>水印动态嵌入</span></div>
+            <div class="step"><strong>04</strong><span>输出含水印内容</span></div>
+            <div class="step"><strong>05</strong><span>版权验证与溯源</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 多模态交互 -->
+      <section class="page" id="dialog">
+        <div class="page-header"><div><h2 class="page-title">多模态交互</h2><p class="page-desc">模拟视觉语言模型的图文交互过程，可开启生成内容水印嵌入，用于展示平台的内容溯源能力。</p></div></div>
+        <div class="grid cols-2">
+          <div class="card">
+            <div class="panel-title"><h3>输入区域</h3><span class="pill">Watermark ON</span></div>
+            <div class="upload-box">拖拽上传图片<br/>支持 PNG / JPG / JPEG</div>
+            <div class="field" style="margin-top:16px;"><label>Prompt</label><textarea>请描述图像内容，并生成一段版权保护说明。</textarea></div>
+            <button class="btn">开始生成</button>
+          </div>
+          <div class="card">
+            <div class="panel-title"><h3>模型输出</h3><span class="status ok">已嵌入水印</span></div>
+            <p>该内容由 MaskSource 保护模型生成，输出文本中已动态嵌入用户身份序列。后续可通过水印验证模块提取用户ID、生成时间与版权归属信息。</p>
+            <div class="result-box" style="margin-top:18px;">水印状态：Active<br/>用户标识：USR-egnever-0427<br/>嵌入策略：Entropy Adaptive Multi-bit<br/>内容质量：High Fidelity</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 模型管理 -->
+      <section class="page" id="models">
+        <div class="page-header"><div><h2 class="page-title">模型管理</h2><p class="page-desc">管理平台接入的视觉语言模型，支持导入模型、嵌入版权水印、下载受保护模型以及查看部署状态。</p></div><button class="btn">导入模型</button></div>
+        <div class="card">
+          <table><thead><tr><th>模型名称</th><th>类型</th><th>水印状态</th><th>检测置信度</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr><td>CLIP-ViT-B/32</td><td>对比学习 VLM</td><td><span class="status ok">已嵌入</span></td><td>98.7%</td><td><button class="btn secondary">验证</button></td></tr>
+            <tr><td>BLIP Caption</td><td>统一视觉语言预训练</td><td><span class="status warn">待验证</span></td><td>--</td><td><button class="btn secondary">嵌入</button></td></tr>
+            <tr><td>LLaVA-7B</td><td>视觉指令模型</td><td><span class="status ok">已嵌入</span></td><td>96.2%</td><td><button class="btn secondary">下载</button></td></tr>
+            <tr><td>MiniGPT-4</td><td>多模态生成模型</td><td><span class="status off">未嵌入</span></td><td>--</td><td><button class="btn secondary">嵌入</button></td></tr>
+          </tbody></table>
+        </div>
+      </section>
+
+      <!-- 水印验证 -->
+      <section class="page" id="verify">
+        <div class="page-header"><div><h2 class="page-title">水印验证</h2><p class="page-desc">核心展示页面：同时提供模型版权验证与生成内容身份溯源，体现「双盾双溯源」的系统能力。</p></div></div>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>模型版权验证</h3>
+            <div class="field"><label>选择模型</label><select><option>CLIP-ViT-B/32</option><option>LLaVA-7B</option><option>BLIP Caption</option></select></div>
+            <div class="upload-box">上传水印图像触发器</div>
+            <div class="field" style="margin-top:16px;"><label>水印文本触发器</label><input value="secure trace token sequence" /></div>
+            <button class="btn">开始验证</button>
+            <div class="result-box" style="margin-top:18px;">验证成功：检测到模型版权水印<br/>匹配率：98.7%<br/>版权归属：MaskSource Team</div>
+          </div>
+          <div class="card">
+            <h3>生成内容溯源</h3>
+            <div class="field"><label>待检测文本</label><textarea>请输入需要进行版权追踪和水印提取的生成文本...</textarea></div>
+            <button class="btn">提取水印序列</button>
+            <div class="result-box" style="margin-top:18px;">提取结果：成功<br/>用户ID：USR-egnever-0427<br/>生成时间：2026-05-05 21:34<br/>匹配率：97.9%</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 安全分析 -->
+      <section class="page" id="analysis">
+        <div class="page-header"><div><h2 class="page-title">安全分析</h2><p class="page-desc">展示模型在常见攻击场景下的水印鲁棒性、文本质量保持率与验证稳定性。</p></div></div>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>水印性能指标</h3>
+            <div class="chart-lines">
+              <div class="chart-line"><label><span>模型版权验证成功率</span><span>98.7%</span></label><div class="bar"><span style="--w:98.7%"></span></div></div>
+              <div class="chart-line"><label><span>生成内容提取准确率</span><span>97.9%</span></label><div class="bar"><span style="--w:97.9%"></span></div></div>
+              <div class="chart-line"><label><span>文本质量保持率</span><span>95.6%</span></label><div class="bar"><span style="--w:95.6%"></span></div></div>
+              <div class="chart-line"><label><span>攻击后水印存活率</span><span>93.1%</span></label><div class="bar"><span style="--w:93.1%"></span></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>攻击测试</h3>
+            <table><thead><tr><th>攻击类型</th><th>风险</th><th>结果</th></tr></thead>
+            <tbody>
+              <tr><td>模型微调</td><td>中</td><td><span class="status ok">通过</span></td></tr>
+              <tr><td>结构化剪枝</td><td>高</td><td><span class="status ok">通过</span></td></tr>
+              <tr><td>提示注入</td><td>中</td><td><span class="status warn">待复核</span></td></tr>
+              <tr><td>文本改写</td><td>高</td><td><span class="status ok">通过</span></td></tr>
+            </tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 系统设置 -->
+      <section class="page" id="settings">
+        <div class="page-header"><div><h2 class="page-title">系统设置</h2><p class="page-desc">配置默认模型、验证阈值、水印强度与用户身份信息。</p></div></div>
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>验证参数</h3>
+            <div class="field"><label>默认模型</label><select><option>CLIP-ViT-B/32</option><option>LLaVA-7B</option></select></div>
+            <div class="field"><label>检测阈值</label><input value="0.95" /></div>
+            <div class="field"><label>水印强度 &delta;</label><input value="2.0" /></div>
+            <button class="btn">保存设置</button>
+          </div>
+          <div class="card">
+            <h3>用户身份载荷</h3>
+            <div class="field"><label>用户ID</label><input value="USR-egnever-0427" /></div>
+            <div class="field"><label>版权主体</label><input value="MaskSource Team" /></div>
+            <div class="field"><label>密钥状态</label><input value="已启用秘密图片种子" /></div>
+            <button class="btn secondary">更新身份序列</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-note">Demo Notice：本页面为作品展示用假前端，主要用于体现 MaskSource 的系统流程、核心模块与平台交互效果。</div>
+    </main>
   </section>
 
-  <!-- Architecture -->
-  <section id="architecture" class="section section-light">
-    <div class="container">
-      <h2 class="section-title">🏗️ 系统架构</h2>
-      <div class="arch-diagram">
-        <div class="arch-row">
-          <div class="arch-box arch-shield">
-            <div class="arch-label">🛡️ 第一盾</div>
-            <h4>模型版权保护子系统</h4>
-            <ul>
-              <li>水印生成（DWT + 可逆网络）</li>
-              <li>水印嵌入（提示学习 + MGDA）</li>
-              <li>水印验证（黑盒 + 跨模态溯源）</li>
-            </ul>
-          </div>
-          <div class="arch-connector">⟷</div>
-          <div class="arch-box arch-shield">
-            <div class="arch-label">🛡️ 第二盾</div>
-            <h4>生成内容版权保护子系统</h4>
-            <ul>
-              <li>身份序列生成（SHA-256 + MD5）</li>
-              <li>熵计算与多列表编码</li>
-              <li>Logits 偏置注入与提取</li>
-            </ul>
-          </div>
-        </div>
-        <div class="arch-center">
-          <div class="arch-box arch-client">
-            <div class="arch-label">💻 统一客户端</div>
-            <h4>VLM 版权保护系统</h4>
-            <p>模型管理 · 对话交互 · 水印验证 · 权限分级 · 可视化取证</p>
-          </div>
-        </div>
-      </div>
-      <p class="arch-caption">
-        双盾双溯源架构：模型侧通过「提示-图像双密钥」保护模型本体版权；内容侧通过「熵引导多比特水印」追踪生成内容来源。
-        两条链路在统一客户端汇合，实现完整的争议处理与证据输出。
-      </p>
-    </div>
-  </section>
-
-  <!-- Results -->
-  <section id="results" class="section">
-    <div class="container">
-      <h2 class="section-title">📊 实验结果</h2>
-
-      <div class="results-tabs">
-        <button class="tab-btn active" data-tab="model">模型版权保护</button>
-        <button class="tab-btn" data-tab="content">生成内容版权保护</button>
-      </div>
-
-      <div id="tab-model" class="tab-content active">
-        <div class="results-grid">
-          <div class="result-card highlight">
-            <div class="result-value">≥ 97%</div>
-            <div class="result-label">微调/剪枝场景 WSR</div>
-            <div class="result-desc">水印成功率在严苛攻击下依然稳定</div>
-          </div>
-          <div class="result-card">
-            <div class="result-value">≈ 100%</div>
-            <div class="result-label">跨数据集零样本</div>
-            <div class="result-desc">未见类别上水印激活稳定性极高</div>
-          </div>
-          <div class="result-card">
-            <div class="result-value">37.43 dB</div>
-            <div class="result-label">平均 PSNR</div>
-            <div class="result-desc">图像隐蔽性优异，视觉几乎无感知</div>
-          </div>
-          <div class="result-card">
-            <div class="result-value">0.939</div>
-            <div class="result-label">平均 SSIM</div>
-            <div class="result-desc">结构相似性保持度高</div>
-          </div>
-          <div class="result-card highlight">
-            <div class="result-value">-70%</div>
-            <div class="result-label">FGSM 攻击 MSE 下降</div>
-            <div class="result-desc">对抗训练显著提升恢复鲁棒性</div>
-          </div>
-        </div>
-      </div>
-
-      <div id="tab-content" class="tab-content">
-        <div class="results-grid">
-          <div class="result-card highlight">
-            <div class="result-value">2.0+</div>
-            <div class="result-label">bits/token 容量</div>
-            <div class="result-desc">相较传统单比特方法容量翻倍</div>
-          </div>
-          <div class="result-card">
-            <div class="result-value">+2%~16%</div>
-            <div class="result-label">检测准确率提升</div>
-            <div class="result-desc">相较 KGW 等传统基线显著改进</div>
-          </div>
-          <div class="result-card highlight">
-            <div class="result-value">6~10</div>
-            <div class="result-label">困惑度 (PPL)</div>
-            <div class="result-desc">从传统 44~87 降至个位数区间</div>
-          </div>
-          <div class="result-card">
-            <div class="result-value">自适应</div>
-            <div class="result-label">熵引导嵌入策略</div>
-            <div class="result-desc">按不确定性动态调节，保真度与容量兼得</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Demo / Screenshots -->
-  <section id="demo" class="section section-light">
-    <div class="container">
-      <h2 class="section-title">🖥️ 系统演示</h2>
-      <p class="section-subtitle">以下为本系统核心功能界面截图（待插入实际效果图）</p>
-
-      <div class="screenshot-gallery">
-        <div class="screenshot-card">
-          <div class="screenshot-placeholder">
-            <span>🏠 系统首页</span>
-            <small>用户端主界面，集成对话、模型管理、水印验证</small>
-          </div>
-          <p class="screenshot-caption">首页 / 对话模块</p>
-        </div>
-        <div class="screenshot-card">
-          <div class="screenshot-placeholder">
-            <span>🔍 模型水印验证</span>
-            <small>上传后门图像与提示语，验证模型所有权</small>
-          </div>
-          <p class="screenshot-caption">模型版权验证界面</p>
-        </div>
-        <div class="screenshot-card">
-          <div class="screenshot-placeholder">
-            <span>📝 内容水印验证</span>
-            <small>输入可疑文本，提取并可视化水印分布</small>
-          </div>
-          <p class="screenshot-caption">内容溯源验证界面</p>
-        </div>
-        <div class="screenshot-card">
-          <div class="screenshot-placeholder">
-            <span>📊 取证报告输出</span>
-            <small>匹配度、汉明距离、BER 等量化指标</small>
-          </div>
-          <p class="screenshot-caption">取证报告界面</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pipeline -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">🔄 端到端运行流程</h2>
-      <div class="pipeline">
-        <div class="pipeline-step">
-          <div class="step-num">1</div>
-          <div class="step-title">配置</div>
-          <div class="step-desc">管理员录入身份信息并配置秘密图像</div>
-        </div>
-        <div class="pipeline-arrow">→</div>
-        <div class="pipeline-step">
-          <div class="step-num">2</div>
-          <div class="step-title">生成</div>
-          <div class="step-desc">系统生成双密钥触发器与身份序列</div>
-        </div>
-        <div class="pipeline-arrow">→</div>
-        <div class="pipeline-step">
-          <div class="step-num">3</div>
-          <div class="step-title">嵌入</div>
-          <div class="step-desc">执行提示学习 + MGDA 完成水印嵌入</div>
-        </div>
-        <div class="pipeline-arrow">→</div>
-        <div class="pipeline-step">
-          <div class="step-num">4</div>
-          <div class="step-title">上线</div>
-          <div class="step-desc">模型上线，用户正常调用生成内容</div>
-        </div>
-        <div class="pipeline-arrow">→</div>
-        <div class="pipeline-step">
-          <div class="step-num">5</div>
-          <div class="step-title">注入</div>
-          <div class="step-desc">生成阶段按熵值策略动态注入身份水印</div>
-        </div>
-        <div class="pipeline-arrow">→</div>
-        <div class="pipeline-step">
-          <div class="step-num">6</div>
-          <div class="step-title">验证</div>
-          <div class="step-desc">争议时分别执行模型侧与内容侧验证</div>
-        </div>
-        <div class="pipeline-arrow">→</div>
-        <div class="pipeline-step">
-          <div class="step-num">7</div>
-          <div class="step-title">取证</div>
-          <div class="step-desc">输出 WSR、SSIM、匹配度、汉明距离等证据</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Citation -->
-  <section class="section section-light">
-    <div class="container">
-      <h2 class="section-title">📚 引用</h2>
-      <div class="citation-box">
-        <pre><code>@article{masksource2025,
-  title={MaskSource: 基于「双盾双溯源」的视觉语言模型全链路版权保护体系},
-  author={MaskSource Team},
-  year={2025},
-  note={中国大学生计算机设计大赛参赛作品}
-}</code></pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact / Footer -->
-  <footer id="contact" class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="logo">
-            <span class="logo-icon">🛡️</span>
-            <span class="logo-text">MaskSource</span>
-          </div>
-          <p>面向视觉语言模型的全链路版权保护与溯源系统</p>
-        </div>
-        <div class="footer-links">
-          <h4>链接</h4>
-          <ul>
-            <li><a href="https://github.com/your-team/MaskSource" target="_blank">GitHub 仓库</a></li>
-            <li><a href="#">作品书 PDF（待上传）</a></li>
-            <li><a href="#">演示视频（待上传）</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>联系我们</h4>
-          <ul>
-            <li>📧 [待填写]</li>
-            <li>🏫 [待填写学校]</li>
-            <li>🏆 中国大学生计算机设计大赛</li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2025 MaskSource Team. All rights reserved. | Built for trustworthy AI copyright protection.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="js/main.js"></script>
+  <script>
+    function switchAuth(type) {
+      const tabs = document.querySelectorAll('.login-tabs button');
+      tabs.forEach(btn => btn.classList.remove('active'));
+      if (type === 'login') { tabs[0].classList.add('active'); document.getElementById('loginForm').style.display='block'; document.getElementById('registerForm').style.display='none'; }
+      else { tabs[1].classList.add('active'); document.getElementById('loginForm').style.display='none'; document.getElementById('registerForm').style.display='block'; }
+    }
+    document.querySelectorAll('.role-tabs button').forEach(btn => {
+      btn.addEventListener('click', () => { document.querySelectorAll('.role-tabs button').forEach(b => b.classList.remove('active')); btn.classList.add('active'); });
+    });
+    function openLogin() { document.getElementById('officialSite').style.display='none'; document.getElementById('loginScreen').style.display='grid'; document.getElementById('dashboard').style.display='none'; window.scrollTo(0,0); }
+    function enterSystem() { document.getElementById('officialSite').style.display='none'; document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; }
+    function showPage(id, target) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active')); target.classList.add('active'); }
+  </script>
 </body>
 </html>
