@@ -1,0 +1,22 @@
+# 生成内容版权保护子系统配置
+model:
+  name: "blip"
+  variant: "base"
+  device: "cuda"
+
+payload:
+  hash_alg: "sha256"
+  user_id_field: "user_id"
+  timestamp_field: "timestamp"
+
+embedding:
+  seed_hash_alg: "md5"
+  secret_image: "data/secret_image.png"
+  entropy_thresholds: [0.5, 1.5, 3.0]
+  list_sizes: [2, 4, 8]
+  delta: 2.0
+  max_lists: 8
+
+verification:
+  match_threshold: 0.95
+  ber_threshold: 0.05

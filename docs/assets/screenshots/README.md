@@ -1,0 +1,1 @@
+# Screenshots Placeholder\n\n请将实际系统界面截图放入本目录，文件命名如下：\n\n- homepage.png      — 系统首页界面\n- model_verify.png  — 模型水印验证界面\n- content_verify.png — 生成内容水印验证界面\n- architecture.png  — 系统架构图\n- results.png       — 实验结果图表\n\n截图建议使用 1920x1080 或 1440x900 分辨率，PNG 格式。\n

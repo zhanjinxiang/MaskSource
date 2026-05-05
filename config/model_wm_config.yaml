@@ -1,0 +1,30 @@
+# 模型版权保护子系统配置
+model:
+  name: "ViT-B/32"
+  pretrained: "openai"
+  device: "cuda"
+
+trigger:
+  image_secret: "data/secret_image.png"
+  dwt_wavelet: "haar"
+  dwt_level: 2
+  inv_net_channels: 64
+  inv_net_blocks: 3
+
+training:
+  epochs: 50
+  batch_size: 32
+  lr: 0.001
+  optimizer: "sgd"
+  scheduler: "cosine"
+  mgda_enabled: true
+
+loss:
+  utility_weight: 1.0
+  multi_trigger_weight: 1.0
+  single_trigger_weight: 0.5
+
+verification:
+  wsr_threshold: 0.95
+  ssim_threshold: 0.90
+  hamming_threshold: 0.10

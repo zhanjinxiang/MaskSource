@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaskSource | 双盾双溯源 VLM 版权保护体系</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="logo">
+        <span class="logo-icon">🛡️</span>
+        <span class="logo-text">MaskSource</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#abstract">简介</a></li>
+        <li><a href="#features">特性</a></li>
+        <li><a href="#architecture">架构</a></li>
+        <li><a href="#results">实验</a></li>
+        <li><a href="#demo">演示</a></li>
+        <li><a href="#contact">联系</a></li>
+      </ul>
+      <a href="https://github.com/your-team/MaskSource" class="btn btn-outline" target="_blank">GitHub</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge">中国大学生计算机设计大赛参赛作品</div>
+      <h1 class="hero-title">
+        MaskSource
+        <span class="hero-subtitle">基于「双盾双溯源」的视觉语言模型<br>全链路版权保护体系</span>
+      </h1>
+      <p class="hero-desc">
+        面向视觉语言模型（VLM）的版权保护与溯源系统。通过「提示-图像双密钥联合触发」与「熵引导多比特文本水印」两大核心机制，
+        同时解决<strong>模型所有权证明</strong>与<strong>生成内容来源追踪</strong>问题，构建从模型到内容的闭环保护链路。
+      </p>
+      <div class="hero-actions">
+        <a href="#demo" class="btn btn-primary">🚀 在线演示</a>
+        <a href="https://github.com/your-team/MaskSource" class="btn btn-secondary" target="_blank">📦 代码仓库</a>
+      </div>
+      <div class="hero-meta">
+        <span class="meta-item">🔒 双密钥联合触发</span>
+        <span class="meta-item">📊 2.0+ bits/token</span>
+        <span class="meta-item">🎯 WSR ≥ 97%</span>
+        <span class="meta-item">🧠 熵引导自适应</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Abstract -->
+  <section id="abstract" class="section section-light">
+    <div class="container">
+      <h2 class="section-title">📄 作品摘要</h2>
+      <div class="abstract-card">
+        <p>
+          视觉语言模型凭借其强大的跨模态理解与生成能力，在图像描述生成、视觉问答、创意内容生成等领域展现出巨大潜力。
+          然而，模型窃取、生成内容盗用等侵权行为日益频繁，严重威胁模型安全与内容可信性。
+        </p>
+        <p>
+          本作品提出一种面向视觉语言模型的版权保护与溯源方案。该方案通过融合后门与高容量水印技术，构建了模型与生成内容的双层防护体系：
+          在<strong>模型所有权验证</strong>上，我们利用「提示-图像」双密钥后门机制，其跨模态的联合触发条件有效规避了单一触发器的安全瓶颈；
+          在<strong>生成内容方面</strong>，则通过自适应多比特水印技术实现精准溯源。
+        </p>
+        <p>
+          实验表明，模型版权保护系统在微调和结构化剪枝等严苛场景下 WSR 稳定在 <strong>97% 以上</strong>；
+          生成内容版权保护系统实现了嵌入容量、检测准确率与文本质量的协同提升，容量达到 <strong>2.0+ bits/token</strong>，
+          困惑度降至 <strong>个位数区间</strong>。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="section">
+    <div class="container">
+      <h2 class="section-title">✨ 核心特性</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>双密钥联合触发</h3>
+          <p>提示-图像双模态同时满足方可激活水印，单一条件无法触发，破解难度指数级提升。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧬</div>
+          <h3>熵引导自适应嵌入</h3>
+          <p>根据生成位置的不确定性动态调整嵌入强度，低熵区弱嵌入保自然度，高熵区强嵌入提容量。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>多列表高容量编码</h3>
+          <p>2/4/8 动态列表映射，单位位置编码 1~3 比特，容量突破传统单比特瓶颈至 2.0+ bits/token。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>FGSM 对抗鲁棒训练</h3>
+          <p>高频域对抗样本持续训练可逆网络，秘密恢复误差 MSE 较原始网络下降超 70%。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚖️</div>
+          <h3>MGDA 多目标协同</h3>
+          <p>动态求解共享更新方向，协调效用损失、多触发器损失与单触发器约束，训练稳定高效。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>确定性身份序列恢复</h3>
+          <p>从「统计有无水印」升级为「精准恢复身份序列」，支持用户级内容追踪与可量化取证。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section id="architecture" class="section section-light">
+    <div class="container">
+      <h2 class="section-title">🏗️ 系统架构</h2>
+      <div class="arch-diagram">
+        <div class="arch-row">
+          <div class="arch-box arch-shield">
+            <div class="arch-label">🛡️ 第一盾</div>
+            <h4>模型版权保护子系统</h4>
+            <ul>
+              <li>水印生成（DWT + 可逆网络）</li>
+              <li>水印嵌入（提示学习 + MGDA）</li>
+              <li>水印验证（黑盒 + 跨模态溯源）</li>
+            </ul>
+          </div>
+          <div class="arch-connector">⟷</div>
+          <div class="arch-box arch-shield">
+            <div class="arch-label">🛡️ 第二盾</div>
+            <h4>生成内容版权保护子系统</h4>
+            <ul>
+              <li>身份序列生成（SHA-256 + MD5）</li>
+              <li>熵计算与多列表编码</li>
+              <li>Logits 偏置注入与提取</li>
+            </ul>
+          </div>
+        </div>
+        <div class="arch-center">
+          <div class="arch-box arch-client">
+            <div class="arch-label">💻 统一客户端</div>
+            <h4>VLM 版权保护系统</h4>
+            <p>模型管理 · 对话交互 · 水印验证 · 权限分级 · 可视化取证</p>
+          </div>
+        </div>
+      </div>
+      <p class="arch-caption">
+        双盾双溯源架构：模型侧通过「提示-图像双密钥」保护模型本体版权；内容侧通过「熵引导多比特水印」追踪生成内容来源。
+        两条链路在统一客户端汇合，实现完整的争议处理与证据输出。
+      </p>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section id="results" class="section">
+    <div class="container">
+      <h2 class="section-title">📊 实验结果</h2>
+
+      <div class="results-tabs">
+        <button class="tab-btn active" data-tab="model">模型版权保护</button>
+        <button class="tab-btn" data-tab="content">生成内容版权保护</button>
+      </div>
+
+      <div id="tab-model" class="tab-content active">
+        <div class="results-grid">
+          <div class="result-card highlight">
+            <div class="result-value">≥ 97%</div>
+            <div class="result-label">微调/剪枝场景 WSR</div>
+            <div class="result-desc">水印成功率在严苛攻击下依然稳定</div>
+          </div>
+          <div class="result-card">
+            <div class="result-value">≈ 100%</div>
+            <div class="result-label">跨数据集零样本</div>
+            <div class="result-desc">未见类别上水印激活稳定性极高</div>
+          </div>
+          <div class="result-card">
+            <div class="result-value">37.43 dB</div>
+            <div class="result-label">平均 PSNR</div>
+            <div class="result-desc">图像隐蔽性优异，视觉几乎无感知</div>
+          </div>
+          <div class="result-card">
+            <div class="result-value">0.939</div>
+            <div class="result-label">平均 SSIM</div>
+            <div class="result-desc">结构相似性保持度高</div>
+          </div>
+          <div class="result-card highlight">
+            <div class="result-value">-70%</div>
+            <div class="result-label">FGSM 攻击 MSE 下降</div>
+            <div class="result-desc">对抗训练显著提升恢复鲁棒性</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-content" class="tab-content">
+        <div class="results-grid">
+          <div class="result-card highlight">
+            <div class="result-value">2.0+</div>
+            <div class="result-label">bits/token 容量</div>
+            <div class="result-desc">相较传统单比特方法容量翻倍</div>
+          </div>
+          <div class="result-card">
+            <div class="result-value">+2%~16%</div>
+            <div class="result-label">检测准确率提升</div>
+            <div class="result-desc">相较 KGW 等传统基线显著改进</div>
+          </div>
+          <div class="result-card highlight">
+            <div class="result-value">6~10</div>
+            <div class="result-label">困惑度 (PPL)</div>
+            <div class="result-desc">从传统 44~87 降至个位数区间</div>
+          </div>
+          <div class="result-card">
+            <div class="result-value">自适应</div>
+            <div class="result-label">熵引导嵌入策略</div>
+            <div class="result-desc">按不确定性动态调节，保真度与容量兼得</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo / Screenshots -->
+  <section id="demo" class="section section-light">
+    <div class="container">
+      <h2 class="section-title">🖥️ 系统演示</h2>
+      <p class="section-subtitle">以下为本系统核心功能界面截图（待插入实际效果图）</p>
+
+      <div class="screenshot-gallery">
+        <div class="screenshot-card">
+          <div class="screenshot-placeholder">
+            <span>🏠 系统首页</span>
+            <small>用户端主界面，集成对话、模型管理、水印验证</small>
+          </div>
+          <p class="screenshot-caption">首页 / 对话模块</p>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-placeholder">
+            <span>🔍 模型水印验证</span>
+            <small>上传后门图像与提示语，验证模型所有权</small>
+          </div>
+          <p class="screenshot-caption">模型版权验证界面</p>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-placeholder">
+            <span>📝 内容水印验证</span>
+            <small>输入可疑文本，提取并可视化水印分布</small>
+          </div>
+          <p class="screenshot-caption">内容溯源验证界面</p>
+        </div>
+        <div class="screenshot-card">
+          <div class="screenshot-placeholder">
+            <span>📊 取证报告输出</span>
+            <small>匹配度、汉明距离、BER 等量化指标</small>
+          </div>
+          <p class="screenshot-caption">取证报告界面</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">🔄 端到端运行流程</h2>
+      <div class="pipeline">
+        <div class="pipeline-step">
+          <div class="step-num">1</div>
+          <div class="step-title">配置</div>
+          <div class="step-desc">管理员录入身份信息并配置秘密图像</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">2</div>
+          <div class="step-title">生成</div>
+          <div class="step-desc">系统生成双密钥触发器与身份序列</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">3</div>
+          <div class="step-title">嵌入</div>
+          <div class="step-desc">执行提示学习 + MGDA 完成水印嵌入</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">4</div>
+          <div class="step-title">上线</div>
+          <div class="step-desc">模型上线，用户正常调用生成内容</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">5</div>
+          <div class="step-title">注入</div>
+          <div class="step-desc">生成阶段按熵值策略动态注入身份水印</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">6</div>
+          <div class="step-title">验证</div>
+          <div class="step-desc">争议时分别执行模型侧与内容侧验证</div>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">7</div>
+          <div class="step-title">取证</div>
+          <div class="step-desc">输出 WSR、SSIM、匹配度、汉明距离等证据</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Citation -->
+  <section class="section section-light">
+    <div class="container">
+      <h2 class="section-title">📚 引用</h2>
+      <div class="citation-box">
+        <pre><code>@article{masksource2025,
+  title={MaskSource: 基于「双盾双溯源」的视觉语言模型全链路版权保护体系},
+  author={MaskSource Team},
+  year={2025},
+  note={中国大学生计算机设计大赛参赛作品}
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact / Footer -->
+  <footer id="contact" class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-icon">🛡️</span>
+            <span class="logo-text">MaskSource</span>
+          </div>
+          <p>面向视觉语言模型的全链路版权保护与溯源系统</p>
+        </div>
+        <div class="footer-links">
+          <h4>链接</h4>
+          <ul>
+            <li><a href="https://github.com/your-team/MaskSource" target="_blank">GitHub 仓库</a></li>
+            <li><a href="#">作品书 PDF（待上传）</a></li>
+            <li><a href="#">演示视频（待上传）</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>联系我们</h4>
+          <ul>
+            <li>📧 [待填写]</li>
+            <li>🏫 [待填写学校]</li>
+            <li>🏆 中国大学生计算机设计大赛</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 MaskSource Team. All rights reserved. | Built for trustworthy AI copyright protection.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
