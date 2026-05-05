@@ -34,4 +34,4 @@
 ## 部署
 
 完成后将构建产物复制到 `docs/` 目录（或配置 GitHub Pages 指向本目录），确保：
-`https://your-team.github.io/MaskSource/` 可正常访问。
+`https://zhanjinxiang.github.io/MaskSource/` 可正常访问。

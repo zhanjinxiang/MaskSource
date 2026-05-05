@@ -28,7 +28,7 @@ MaskSource 是一套面向**视觉语言模型（Vision-Language Model, VLM）**
 
 本系统在**安全性、隐蔽性、高容量与可追溯性**之间实现了良好的工程平衡，为解决 VLM 版权难题提供了可落地的全新思路。
 
-> 🔗 **项目主页**: [https://your-team.github.io/MaskSource/](https://your-team.github.io/MaskSource/) （部署后更新）
+> 🔗 **项目主页**: [https://zhanjinxiang.github.io/MaskSource/](https://zhanjinxiang.github.io/MaskSource/) （部署后更新）
 
 ---
 
@@ -99,7 +99,7 @@ MaskSource 是一套面向**视觉语言模型（Vision-Language Model, VLM）**
 1. **克隆仓库**
 
 ```bash
-git clone https://github.com/your-team/MaskSource.git
+git clone https://github.com/zhanjinxiang/MaskSource.git
 cd MaskSource
 ```
 

@@ -21,8 +21,8 @@
 在本地 `MaskSource/` 目录下打开 PowerShell / Git Bash，执行：
 
 ```bash
-# 绑定远程仓库（把 your-team 换成你的 GitHub 用户名/组织名）
-git remote add origin https://github.com/your-team/MaskSource.git
+# 绑定远程仓库（把 zhanjinxiang 换成你的 GitHub 用户名/组织名）
+git remote add origin https://github.com/zhanjinxiang/MaskSource.git
 
 # 推送
 git branch -M main
@@ -50,7 +50,7 @@ gh repo create MaskSource --public --source=. --remote=origin --push
 2. **Source** 选择 **Deploy from a branch**
 3. **Branch** 选择 `main`，文件夹选择 `/docs`
 4. 点击 **Save**
-5. 等待 1~3 分钟，访问 `https://your-team.github.io/MaskSource/`
+5. 等待 1~3 分钟，访问 `https://zhanjinxiang.github.io/MaskSource/`
 
 > 本仓库已配置 `docs/.nojekyll` 文件，确保 Pages 正确渲染。
 
@@ -71,6 +71,6 @@ git push origin main
 - [ ] GitHub 远程仓库已创建
 - [ ] 代码已推送到 `main` 分支
 - [ ] GitHub Pages 已开启，指向 `/docs`
-- [ ] 主页 `https://your-team.github.io/MaskSource/` 可正常打开
+- [ ] 主页 `https://zhanjinxiang.github.io/MaskSource/` 可正常打开
 - [ ] README 中的 GitHub 链接已替换为真实地址
 - [ ] docs/index.html 中的 GitHub 链接已替换为真实地址
