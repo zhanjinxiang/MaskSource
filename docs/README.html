@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaskSource - 基于双盾双溯源的VLM全链路版权保护体系</title>
+    <style>
+        :root {
+            --primary: #0a0e1a;
+            --secondary: #111827;
+            --accent: #a3e635;
+            --accent-dim: #65a30d;
+            --text: #e5e7eb;
+            --text-dim: #9ca3af;
+            --border: #1f2937;
+            --card-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* 顶部装饰条 */
+        .top-bar {
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-dim), var(--accent), var(--accent-dim));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* 头部区域 */
+        .hero {
+            padding: 100px 20px 60px;
+            text-align: center;
+            background: radial-gradient(ellipse at center, #1a2744 0%, var(--primary) 70%);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="%23a3e635" opacity="0.1"/></svg>') repeat;
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(163, 230, 53, 0.1);
+            border: 1px solid var(--accent-dim);
+            border-radius: 20px;
+            color: var(--accent);
+            font-size: 14px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 18px;
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+
+        /* GitHub链接按钮 */
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            background: #24292e;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid #444;
+        }
+
+        .github-link:hover {
+            background: #2f363d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(163, 230, 53, 0.2);
+        }
+
+        .github-link svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* 引言区块 */
+        .intro {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .intro blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 24px;
+            font-size: 17px;
+            color: var(--text-dim);
+            line-height: 1.9;
+        }
+
+        .intro blockquote strong {
+            color: var(--accent);
+        }
+
+        /* 内容区域通用样式 */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .section-desc {
+            color: var(--text-dim);
+            font-size: 16px;
+            margin-bottom: 32px;
+            line-height: 1.8;
+        }
+
+        /* 图片展示 */
+        .slide-show {
+            margin: 24px 0;
+        }
+
+        .slide-show img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .slide-show img:hover {
+            transform: scale(1.01);
+        }
+
+        .slide-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .slide-grid img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .slide-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 特性列表 */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 28px;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .feature-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .feature-list li strong {
+            color: var(--accent);
+        }
+
+        /* 数据卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent-dim);
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 创新点卡片 */
+        .innovation-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .innovation-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .innovation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+        }
+
+        .innovation-card:hover {
+            border-color: var(--accent-dim);
+            transform: translateY(-4px);
+        }
+
+        .innovation-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .innovation-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        .innovation-desc {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            .innovation-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 分隔线 */
+        .divider {
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-dim);
+        }
+
+        .footer .slogan {
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar"></div>
+
+    <!-- 头部 -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="badge">第18届中国大学生计算机设计大赛</div>
+            <h1>MaskSource</h1>
+            <p class="subtitle">基于双盾双溯源的VLM全链路版权保护体系</p>
+            <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 24px;">人工智能应用 · 人工智能实践赛</p>
+            <a href="https://github.com/zhanjinxiang/MaskSource" class="github-link" target="_blank">
+                <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                项目代码
+            </a>
+        </div>
+    </header>
+
+    <!-- 引言 -->
+    <div class="intro">
+        <blockquote>
+            <strong>MaskSource</strong> 是专为视觉-语言大模型（VLM）设计的全链路版权保护系统。面对AIGC时代模型盗用、内容侵权等严峻挑战，我们首创<strong>"双盾双溯源"</strong>防护架构，在模型训练、部署、推理到内容分发的全生命周期中，构建起安全、可靠、可追踪的AI资产保护体系，让每一份AI创作都有据可查、有源可溯。
+        </blockquote>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- 研究背景与痛点 -->
+    <section class="section">
+        <h2 class="section-title">研究背景与痛点</h2>
+        <p class="section-desc">随着视觉-语言大模型（VLM）的爆发式发展，AI生成内容（AIGC）已广泛应用于媒体、教育、设计等领域。然而，模型盗用、内容侵权、溯源困难等问题日益严峻：</p>
+        <ul class="feature-list">
+            <li><strong>模型盗用猖獗：</strong>恶意攻击者通过模型窃取、API滥用等方式非法获取商业模型，造成巨大经济损失</li>
+            <li><strong>内容侵权泛滥：</strong>AIGC作品难以确权，原创者权益无法得到有效保护</li>
+            <li><strong>溯源机制缺失：</strong>现有方案多为单点防护，缺乏从模型到内容的全链路追踪能力</li>
+            <li><strong>传统水印局限：</strong>传统数字水印容量低（仅1 bit）、易被破坏，无法满足VLM场景需求</li>
+        </ul>
+        <div class="slide-show">
+            <img src="images/2.png" alt="研究背景">
+        </div>
+        <div class="slide-show">
+            <img src="images/3.png" alt="问题分析">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 解决方案 -->
+    <section class="section">
+        <h2 class="section-title">解决方案</h2>
+        <p class="section-desc">MaskSource 提出"双盾双溯源"架构，从模型层与内容层双重维度构建防护体系：</p>
+        <div class="slide-show">
+            <img src="images/4.png" alt="解决方案总览">
+        </div>
+        <div class="slide-grid">
+            <img src="images/5.png" alt="模型盾">
+            <img src="images/6.png" alt="内容盾">
+        </div>
+        <div class="slide-grid">
+            <img src="images/7.png" alt="模型溯源">
+            <img src="images/8.png" alt="内容溯源">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 核心功能 -->
+    <section class="section">
+        <h2 class="section-title">核心功能</h2>
+        <p class="section-desc">系统覆盖VLM全生命周期，提供四大核心功能模块：</p>
+        
+        <h3 style="color: var(--accent); margin: 32px 0 16px; font-size: 20px;">一、模型盾 — 模型级版权保护</h3>
+        <ul class="feature-list">
+            <li>采用<strong>双密钥后门机制</strong>，通过跨模态联合触发实现模型身份认证</li>
+            <li>图像触发 + 文本触发双重验证，大幅提升隐蔽性与攻击抵抗能力</li>
+            <li>有效防御模型窃取、逆向工程、单模态攻击等多种威胁</li>
+        </ul>
+        <div class="slide-show">
+            <img src="images/9.png" alt="模型盾架构">
+        </div>
+
+        <h3 style="color: var(--accent); margin: 32px 0 16px; font-size: 20px;">二、内容盾 — 内容级版权保护</h3>
+        <ul class="feature-list">
+            <li>突破传统1 bit限制，实现<strong>2.0-2.5 bits</strong>单位置嵌入容量</li>
+            <li>自适应嵌入策略，在保持文本质量的同时提升水印容量</li>
+            <li>支持文本、图像、视频等多模态内容的水印嵌入与提取</li>
+        </ul>
+        <div class="slide-show">
+            <img src="images/10.png" alt="内容盾架构">
+        </div>
+
+        <h3 style="color: var(--accent); margin: 32px 0 16px; font-size: 20px;">三、模型溯源 — 盗用检测与追踪</h3>
+        <ul class="feature-list">
+            <li>基于后门触发的模型指纹提取技术</li>
+            <li>高精度识别盗用模型，支持跨平台、跨架构的模型溯源</li>
+            <li>提供司法级鉴定报告，助力知识产权维权</li>
+        </ul>
+        <div class="slide-show">
+            <img src="images/11.png" alt="模型溯源">
+        </div>
+
+        <h3 style="color: var(--accent); margin: 32px 0 16px; font-size: 20px;">四、内容溯源 — 侵权检测与追踪</h3>
+        <ul class="feature-list">
+            <li>多比特精准内容身份追踪，支持高精度溯源</li>
+            <li>FakeMark热力图可视化，直观展示侵权内容分布</li>
+            <li>全链路追踪能力，从内容反推模型来源</li>
+        </ul>
+        <div class="slide-show">
+            <img src="images/12.png" alt="内容溯源">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 技术架构 -->
+    <section class="section">
+        <h2 class="section-title">技术架构</h2>
+        <p class="section-desc">系统采用模块化设计，各组件松耦合、高内聚，便于扩展与维护：</p>
+        <div class="slide-show">
+            <img src="images/13.png" alt="技术架构">
+        </div>
+        <div class="slide-grid">
+            <img src="images/14.png" alt="技术细节1">
+            <img src="images/15.png" alt="技术细节2">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 系统实现 -->
+    <section class="section">
+        <h2 class="section-title">系统实现</h2>
+        <p class="section-desc">MaskSource 已完成功能完备的系统实现，包含Web管理端、模型服务、水印引擎等核心组件：</p>
+        <div class="slide-grid">
+            <img src="images/16.png" alt="系统实现1">
+            <img src="images/17.png" alt="系统实现2">
+        </div>
+        <div class="slide-grid">
+            <img src="images/18.png" alt="系统实现3">
+            <img src="images/19.png" alt="系统实现4">
+        </div>
+        <div class="slide-show">
+            <img src="images/20.png" alt="系统实现5">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 实验结果 -->
+    <section class="section">
+        <h2 class="section-title">实验结果</h2>
+        <p class="section-desc">在多个主流VLM模型上的测试表明，MaskSource在保护性能与可用性之间取得了优异平衡：</p>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">2.0-2.5</span>
+                <span class="stat-label">bits 单位置嵌入</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">99.2%</span>
+                <span class="stat-label">检测准确率(WSR)</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">7.6</span>
+                <span class="stat-label">文本困惑度(PPL)</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">87.4%</span>
+                <span class="stat-label">困惑度降低幅度</span>
+            </div>
+        </div>
+
+        <div class="slide-show">
+            <img src="images/21.png" alt="实验总览">
+        </div>
+        <div class="slide-show">
+            <img src="images/22.png" alt="实验对比">
+        </div>
+        <div class="slide-show">
+            <img src="images/23.png" alt="消融实验">
+        </div>
+        <div class="slide-show">
+            <img src="images/24.png" alt="鲁棒性测试">
+        </div>
+        <div class="slide-show">
+            <img src="images/25.png" alt="对比实验">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 性能分析 -->
+    <section class="section">
+        <h2 class="section-title">性能分析</h2>
+        <p class="section-desc">深入分析嵌入容量、检测精度与文本质量之间的权衡关系，探索最优参数配置：</p>
+        <div class="slide-show">
+            <img src="images/26.png" alt="容量与精度">
+        </div>
+        <div class="slide-show">
+            <img src="images/27.png" alt="文本质量">
+        </div>
+        <div class="slide-show">
+            <img src="images/28.png" alt="参数调优">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 核心创新 -->
+    <section class="section">
+        <h2 class="section-title">核心创新</h2>
+        <p class="section-desc">三大核心创新点，共同构建安全、可靠、可追踪的AI资产保护体系：</p>
+        
+        <div class="innovation-cards">
+            <div class="innovation-card">
+                <div class="innovation-icon">🛡️</div>
+                <div class="innovation-title">全链路防护</div>
+                <div class="innovation-desc">构建兼顾模型与内容的"双盾"防护链路，覆盖模型训练、部署、推理到内容分发全流程，双重水印机制形成内外兼修的防护体系</div>
+            </div>
+            <div class="innovation-card">
+                <div class="innovation-icon">🔐</div>
+                <div class="innovation-title">双密钥后门</div>
+                <div class="innovation-desc">首创跨模态联合触发的"双密钥后门"安全防线，图像触发+文本触发双重验证，大幅提升隐蔽性与攻击抵抗能力</div>
+            </div>
+            <div class="innovation-card">
+                <div class="innovation-icon">🔍</div>
+                <div class="innovation-title">多比特追踪</div>
+                <div class="innovation-desc">突破零比特瓶颈，实现多比特精准内容身份追踪，单位置嵌入2.0-2.5 bits信息，支持高精度溯源与版权确权</div>
+            </div>
+        </div>
+
+        <div class="slide-show" style="margin-top: 40px;">
+            <img src="images/29.png" alt="核心创新">
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 结语 -->
+    <section class="section">
+        <h2 class="section-title">未来展望</h2>
+        <p class="section-desc">MaskSource 将持续探索增量式水印嵌入与零知识证明脱敏机制，推动负责任的AI建设，建立VLM水印行业标准。我们的目标是让每一份AI创作都有据可查、有源可溯，为AIGC时代的版权保护提供坚实的技术底座。</p>
+        <div class="slide-show">
+            <img src="images/30.png" alt="结语">
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <p class="slogan">守护AI创作，溯源每一份价值</p>
+        <p>MaskSource - 基于双盾双溯源的VLM全链路版权保护体系</p>
+        <p style="margin-top: 12px; font-size: 14px;">© 2025 中国大学生计算机设计大赛参赛作品</p>
+    </footer>
+</body>
+</html>
