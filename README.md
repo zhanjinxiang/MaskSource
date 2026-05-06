@@ -11,8 +11,7 @@
   <a href="#-快速开始">快速开始</a> •
   <a href="#-使用说明">使用说明</a> •
   <a href="#-项目结构">项目结构</a> •
-  <a href="#-实验结果">实验结果</a> •
-  <a href="#-开源声明">开源声明</a>
+  <a href="#-实验结果">实验结果</a> 
 </p>
 
 ---
@@ -307,31 +306,6 @@ MaskSource/
 | 环境 C | Windows 11 Pro / Intel Core i7-1260P / 16GB RAM |
 | Python | 3.9 ~ 3.11 |
 | CUDA | 11.8 / 12.1（GPU 加速时） |
-
----
-
-## 📄 开源声明
-
-本项目使用了以下开源模型、组件与数据集，详细使用情况请参见 [`OPEN_SOURCE.md`](./OPEN_SOURCE.md)：
-
-**核心依赖模型/库**
-- [CLIP](https://github.com/openai/CLIP) (OpenAI)
-- [OpenCLIP](https://github.com/mlfoundations/open_clip) (LAION)
-- [BLIP](https://github.com/salesforce/LAVIS)、[LLaVA](https://github.com/haotian-liu/LLaVA)、[ViT-GPT2](https://huggingface.co/nlpconnect/vit-gpt2-image-captioning)（测试模型）
-
-**算法组件**
-- DWT / IWT（信号处理）
-- 可逆神经网络（Dense Block 实现）
-- MGDA 多梯度下降算法
-- SHA-256 / MD5 哈希标准
-
-**数据集**
-- Caltech101, OxfordPets, Flowers102, Food101, FGVCAircraft, SUN397, DTD, EuroSAT, UCF101
-
-**基线/攻击评估**
-- KGW 红绿列表水印（基线对比）
-- FGSM 对抗攻击（鲁棒性评估）
-- CLP 结构化剪枝（攻击评估）
 
 ---
 
