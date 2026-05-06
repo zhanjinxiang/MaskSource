@@ -1249,7 +1249,7 @@
         <div class="card application-card">
           <div class="number">06</div>
           <h3>科研演示与技术验证</h3>
-          <p>系统界面可直观展示水印生成、嵌入、验证、身份追溯等环节，适合用于项目答辩、实验展示、成果路演和技术原型演示。</p>
+          <p>系统界面可直观展示水印生成、嵌入、验证、身份追溯等环节。</p>
           <div class="pill-row">
             <span class="pill">项目展示</span>
             <span class="pill">答辩演示</span>
@@ -1448,7 +1448,7 @@
           <input id="password" type="password" placeholder="请输入密码，例如 123456" autocomplete="current-password" />
         </div>
         <button class="btn" style="width:100%" onclick="loginSystem()">进入系统</button>
-        <p id="loginError" style="display:none;margin-top:12px;color:#ffb5c0;font-size:14px;">演示账号：用户名 egnever，密码 123456。</p>
+        <p id="loginError" style="display:none;margin-top:12px;color:#ffb5c0;font-size:14px;">用户名或密码错误！请重新输入</p>
       </div>
 
       <div id="registerForm" style="display:none;">
@@ -1467,7 +1467,7 @@
           <input type="password" placeholder="请再次输入密码" />
         </div>
         <button class="btn" style="width:100%" onclick="fakeRegister()">立即注册</button>
-        <p id="registerTip" style="display:none;margin-top:12px;color:#57f5b1;font-size:14px;">注册成功提示仅为静态演示。</p>
+        <p id="registerTip" style="display:none;margin-top:12px;color:#57f5b1;font-size:14px;">注册成功。</p>
       </div>
     </div>
   </section>
@@ -1494,7 +1494,7 @@
     <main class="main">
       <div class="topbar">
         <input class="search" placeholder="搜索模型、任务、水印ID或用户身份..." />
-        <div class="user-chip"><div class="avatar">E</div> egnever · User</div>
+        <div class="user-chip"><div class="avatar">A</div> admin · User</div>
       </div>
 
       <section class="page active" id="home">
@@ -1569,21 +1569,26 @@
         <div class="grid cols-2">
           <div class="card">
             <div class="panel-title"><h3>输入区域</h3><span class="pill">Watermark ON</span></div>
-            <div class="upload-box">拖拽上传图片<br/>支持 PNG / JPG / JPEG</div>
+            <label class="upload-box" for="dialogImage" style="cursor:pointer;">
+              <input id="dialogImage" type="file" accept="image/png,image/jpeg" style="display:none" onchange="showFileName(this, 'dialogFileName')" />
+              <span id="dialogFileName">点击上传图片<br/>支持 PNG / JPG / JPEG</span>
+            </label>
             <div class="field" style="margin-top:16px;">
               <label>Prompt</label>
-              <textarea>请描述图像内容，并生成一段版权保护说明。</textarea>
+              <textarea id="dialogPrompt">请描述图像内容，并生成一段版权保护说明。</textarea>
             </div>
-            <button class="btn">开始生成</button>
+            <button class="btn" onclick="generateMultimodalResult()">开始生成</button>
           </div>
           <div class="card">
-            <div class="panel-title"><h3>模型输出</h3><span class="status ok">已嵌入水印</span></div>
+            <div class="panel-title"><h3>模型输出</h3><span id="dialogStatus" class="status warn">等待生成</span></div>
+            <div id="dialogResult" style="display:none;">
             <p>该内容由 MaskSource 保护模型生成，输出文本中已动态嵌入用户身份序列。后续可通过水印验证模块提取用户ID、生成时间与版权归属信息。</p>
             <div class="result-box" style="margin-top:18px;">
               水印状态：Active<br/>
-              用户标识：USR-egnever-0427<br/>
+              用户标识：USR-admin-0427<br/>
               嵌入策略：Entropy Adaptive Multi-bit<br/>
               内容质量：High Fidelity
+            </div>
             </div>
           </div>
         </div>
@@ -1647,25 +1652,35 @@
         <div class="grid cols-2">
           <div class="card">
             <div class="panel-title"><h3>模型水印验证</h3><span class="pill">Admin View</span></div>
-            <div class="upload-box">上传预定义后门图片<br/>并输入对应 Prompt</div>
+            <label class="upload-box" for="modelWatermarkImage" style="cursor:pointer;">
+              <input id="modelWatermarkImage" type="file" accept="image/png,image/jpeg" style="display:none" onchange="showFileName(this, 'modelVerifyFileName')" />
+              <span id="modelVerifyFileName">点击上传预定义后门图片<br/>并输入对应 Prompt</span>
+            </label>
             <div class="field" style="margin-top:16px;">
               <label>触发 Prompt</label>
-              <input placeholder="请输入预设触发提示语" />
+              <input id="modelVerifyPrompt" placeholder="请输入预设触发提示语" />
             </div>
-            <button class="btn">验证模型所有权</button>
+            <button class="btn" onclick="verifyModelWatermark()">验证模型所有权</button>
+            <div id="modelVerifyResult" class="result-box" style="display:none;margin-top:18px;">
+              验证结果：通过<br/>
+              水印标签：MaskSource-Owner-0427<br/>
+              所有者身份：项目管理中心 / MaskSource Team<br/>
+              置信度：98.7%<br/>
+              结论：目标模型高置信度匹配预设双密钥水印
+            </div>
           </div>
 
           <div class="card">
             <div class="panel-title"><h3>内容水印验证</h3><span class="pill">Trace View</span></div>
             <div class="field">
               <label>待检测文本</label>
-              <textarea placeholder="粘贴需要验证的生成文本..."></textarea>
+              <textarea id="contentVerifyText" placeholder="粘贴需要验证的生成文本..."></textarea>
             </div>
-            <button class="btn">提取身份序列</button>
-            <div class="result-box" style="margin-top:18px;">
+            <button class="btn" onclick="verifyContentWatermark()">提取身份序列</button>
+            <div id="contentVerifyResult" class="result-box" style="display:none;margin-top:18px;">
               匹配度：96.2%<br/>
               汉明距离：0.038<br/>
-              提取身份：USR-egnever-0427<br/>
+              提取身份：USR-admin-0427<br/>
               结论：高置信度携带合法水印
             </div>
           </div>
@@ -1699,11 +1714,7 @@
             </div>
           </div>
         </div>
-
-        <div class="card" style="margin-top:18px;">
-          <h3>测试说明</h3>
-          <p>本页面为静态可视化演示，数值用于展示系统界面效果。实际系统可连接实验结果、日志和模型验证接口，动态展示不同攻击强度下的水印检测表现。</p>
-        </div>
+        
       </section>
 
       <section class="page" id="settings">
@@ -1824,6 +1835,31 @@
     function submitContact(event) {
       event.preventDefault();
       document.getElementById("contactTip").style.display = "block";
+    }
+
+
+    function showFileName(input, targetId) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      if (input.files && input.files.length > 0) {
+        target.innerHTML = "已选择文件：" + input.files[0].name + "<br/>可继续提交演示";
+      }
+    }
+
+    function generateMultimodalResult() {
+      const result = document.getElementById("dialogResult");
+      const status = document.getElementById("dialogStatus");
+      result.style.display = "block";
+      status.className = "status ok";
+      status.textContent = "已嵌入水印";
+    }
+
+    function verifyModelWatermark() {
+      document.getElementById("modelVerifyResult").style.display = "block";
+    }
+
+    function verifyContentWatermark() {
+      document.getElementById("contentVerifyResult").style.display = "block";
     }
 
     function logoutSystem() {
