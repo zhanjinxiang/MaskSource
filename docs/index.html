@@ -54,7 +54,9 @@
       pointer-events: none;
     }
 
-    .official-site {
+    .official-site,
+    .login-screen,
+    .dashboard {
       position: relative;
       z-index: 1;
     }
@@ -72,11 +74,11 @@
       backdrop-filter: blur(18px);
     }
 
-    .site-logo {
+    .site-logo,
+    .logo {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 20px;
     }
 
     .logo-mark {
@@ -102,7 +104,7 @@
       color: var(--muted);
       text-decoration: none;
       font-weight: 650;
-      transition: 0.2 ease;
+      transition: 0.2s ease;
     }
 
     .site-links a:hover {
@@ -150,26 +152,62 @@
       letter-spacing: -0.045em;
     }
 
+    .site-desc,
+    .brand-desc,
+    .page-desc,
+    .section-head p,
+    .card p,
+    .arch-block p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
     .site-desc {
       margin-top: 24px;
       max-width: 820px;
-      color: var(--muted);
       font-size: 17px;
-      line-height: 1.9;
+    }
+
+    .site-actions,
+    .hero-tags,
+    .pill-row,
+    .action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .site-actions {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
       margin-top: 32px;
+    }
+
+    .hero-tags {
+      margin-top: 30px;
+    }
+
+    .hero-tags span,
+    .pill {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      color: #c8e6ff;
+      font-size: 14px;
+    }
+
+    .pill {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(57, 226, 255, 0.08);
+      border-color: rgba(57, 226, 255, 0.16);
+      color: #b9efff;
+      font-size: 12px;
     }
 
     .btn {
       border: none;
       cursor: pointer;
-      color: var(--text);
-      transition: 0.25 ease;
+      transition: 0.25s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -196,20 +234,18 @@
       box-shadow: none;
     }
 
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 30px;
+    .btn.danger {
+      background: rgba(255, 113, 137, 0.12);
+      color: #ffd6dc;
+      border: 1px solid rgba(255, 113, 137, 0.28);
+      box-shadow: none;
     }
 
-    .hero-tags span {
-      padding: 10px 14px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-      color: #c8e6ff;
-      font-size: 14px;
+    .btn.small {
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 12px;
+      font-size: 13px;
     }
 
     .hero-visual {
@@ -235,17 +271,17 @@
       letter-spacing: -0.04em;
     }
 
-    .orbit-card p {
-      margin-top: 10px;
-      color: var(--muted);
-      line-height: 1.75;
+    .metric-row,
+    .chart-line label,
+    .mini-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: #cde9ff;
     }
 
     .metric-row {
-      display: flex;
-      justify-content: space-between;
       margin-top: 28px;
-      color: #cde9ff;
     }
 
     .bar {
@@ -262,6 +298,7 @@
       width: var(--w);
       background: linear-gradient(90deg, var(--blue), var(--cyan), var(--green));
       border-radius: inherit;
+      transition: width 0.5s ease;
     }
 
     .floating-card {
@@ -274,11 +311,17 @@
       box-shadow: 0 16px 40px rgba(0,0,0,0.22);
       backdrop-filter: blur(16px);
       font-weight: 800;
+      animation: floatCard 4s ease-in-out infinite;
     }
 
     .f1 { top: 80px; left: 42px; }
-    .f2 { top: 120px; right: 38px; }
-    .f3 { bottom: 80px; left: 90px; }
+    .f2 { top: 120px; right: 38px; animation-delay: 0.7s; }
+    .f3 { bottom: 80px; left: 90px; animation-delay: 1.4s; }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
 
     .status {
       display: inline-flex;
@@ -288,6 +331,7 @@
       border-radius: 999px;
       font-size: 12px;
       font-weight: 800;
+      white-space: nowrap;
     }
 
     .status.ok { color: var(--green); background: rgba(87,245,177,0.1); }
@@ -310,13 +354,6 @@
       letter-spacing: -0.055em;
     }
 
-    .section-head p {
-      margin-top: 16px;
-      color: var(--muted);
-      line-height: 1.85;
-      font-size: 16px;
-    }
-
     .grid {
       display: grid;
       gap: 18px;
@@ -326,7 +363,10 @@
     .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
     .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
 
-    .card {
+    .card,
+    .arch-block,
+    .tech-image-card,
+    .login-card {
       border: 1px solid var(--line);
       border-radius: 24px;
       background: var(--panel);
@@ -337,7 +377,8 @@
       position: relative;
     }
 
-    .card::after {
+    .card::after,
+    .tech-image-card::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -345,53 +386,21 @@
       pointer-events: none;
     }
 
+    .card > *,
+    .tech-image-card > *,
+    .login-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
     .card h3 {
       margin-bottom: 10px;
       font-size: 19px;
     }
 
-    .card p {
-      color: var(--muted);
-      line-height: 1.75;
-      font-size: 14px;
-    }
-
-    .image-placeholder {
-      min-height: 220px;
-      border: 1px dashed rgba(57, 226, 255, 0.45);
-      border-radius: 22px;
-      background:
-        linear-gradient(135deg, rgba(57,226,255,0.08), rgba(72,167,255,0.05)),
-        rgba(255,255,255,0.03);
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 24px;
-      color: #b9efff;
-      line-height: 1.8;
-    }
-
-    .image-placeholder strong {
-      display: block;
-      color: var(--text);
-      margin-bottom: 8px;
-      font-size: 18px;
-    }
-
     .pill-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
       margin-top: 15px;
-    }
-
-    .pill {
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(57, 226, 255, 0.08);
-      border: 1px solid rgba(57, 226, 255, 0.16);
-      color: #b9efff;
-      font-size: 12px;
+      gap: 8px;
     }
 
     .architecture-box {
@@ -404,19 +413,6 @@
     .arch-block {
       min-height: 230px;
       padding: 28px;
-      border-radius: 26px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
-
-    .arch-block h3 {
-      margin-bottom: 14px;
-    }
-
-    .arch-block p {
-      color: var(--muted);
-      line-height: 1.85;
-      margin-bottom: 14px;
     }
 
     .arch-block ul {
@@ -489,7 +485,7 @@
       color: var(--text);
       padding: 13px 14px;
       outline: none;
-      transition: 0.2 ease;
+      transition: 0.2s ease;
     }
 
     textarea {
@@ -505,28 +501,80 @@
       box-shadow: 0 0 0 4px rgba(57, 226, 255, 0.08);
     }
 
-    .footer-note {
-      margin-top: 30px;
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--line);
-      color: var(--muted);
-      line-height: 1.7;
+    .image-placeholder {
+      min-height: 220px;
+      border: 1px dashed rgba(57, 226, 255, 0.45);
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(57,226,255,0.08), rgba(72,167,255,0.05)),
+        rgba(255,255,255,0.03);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      color: #b9efff;
+      line-height: 1.8;
+    }
+
+    .image-placeholder img,
+    .tech-image-frame img {
+      width: 100%;
+      max-width: 650px;
+      display: block;
+      margin: 10px auto 0;
+      border-radius: 14px;
+    }
+
+    .tech-image-card {
+      margin-top: 22px;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(15, 35, 67, 0.9), rgba(8, 22, 42, 0.82));
+    }
+
+    .tech-image-tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(57, 226, 255, 0.22);
+      background: rgba(57, 226, 255, 0.08);
+      color: #b9efff;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .tech-image-frame {
+      margin-top: 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(109, 183, 255, 0.18);
+      background: rgba(255, 255, 255, 0.035);
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .tech-image-frame img {
+      max-height: 430px;
+      object-fit: contain;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .tech-image-frame.compact img {
+      max-height: 320px;
+    }
+
+    .tech-image-card:hover .tech-image-frame img {
+      transform: scale(1.025);
+      filter: brightness(1.08);
     }
 
     .login-screen {
       min-height: 100vh;
-      display: grid;
+      display: none;
       grid-template-columns: 1.08fr 0.92fr;
       align-items: center;
       gap: 48px;
       padding: 56px 8vw;
-    }
-
-    .brand-block {
-      position: relative;
-      z-index: 1;
     }
 
     .brand-title {
@@ -545,20 +593,14 @@
     .brand-desc {
       margin-top: 24px;
       max-width: 680px;
-      color: var(--muted);
       font-size: 18px;
-      line-height: 1.85;
     }
 
     .login-card {
-      position: relative;
-      z-index: 1;
       padding: 34px;
-      border: 1px solid var(--line);
       border-radius: 28px;
       background: linear-gradient(180deg, rgba(15, 35, 67, 0.92), rgba(8, 22, 42, 0.88));
       box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
     }
 
     .login-tabs {
@@ -572,7 +614,8 @@
     }
 
     .login-tabs button,
-    .role-tabs button {
+    .role-tabs button,
+    .nav button {
       border: none;
       cursor: pointer;
       color: var(--text);
@@ -641,9 +684,6 @@
     }
 
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
       padding: 10px 12px 26px;
       border-bottom: 1px solid var(--line);
       margin-bottom: 18px;
@@ -666,14 +706,11 @@
     }
 
     .nav button {
-      border: none;
       text-align: left;
       padding: 13px 14px;
       border-radius: 14px;
       color: var(--muted);
       background: transparent;
-      cursor: pointer;
-      transition: 0.2s ease;
       font-weight: 650;
     }
 
@@ -690,11 +727,16 @@
       z-index: 1;
     }
 
-    .topbar {
+    .topbar,
+    .page-header,
+    .panel-title {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 18px;
+    }
+
+    .topbar {
       margin-bottom: 28px;
     }
 
@@ -726,7 +768,7 @@
 
     .page {
       display: none;
-      animation: fadeIn 0.26 ease;
+      animation: fadeIn 0.26s ease;
     }
 
     .page.active {
@@ -739,10 +781,7 @@
     }
 
     .page-header {
-      display: flex;
       align-items: flex-end;
-      justify-content: space-between;
-      gap: 24px;
       margin-bottom: 24px;
     }
 
@@ -753,8 +792,6 @@
     }
 
     .page-desc {
-      color: var(--muted);
-      line-height: 1.7;
       max-width: 850px;
     }
 
@@ -790,6 +827,13 @@
       border: 1px solid var(--line);
       text-align: center;
       min-height: 96px;
+      transition: 0.2s ease;
+    }
+
+    .step.active-step {
+      border-color: rgba(87, 245, 177, 0.62);
+      background: rgba(87, 245, 177, 0.08);
+      transform: translateY(-3px);
     }
 
     .step strong {
@@ -827,14 +871,6 @@
       color: var(--muted);
     }
 
-    .panel-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
     .upload-box {
       display: grid;
       place-items: center;
@@ -847,7 +883,9 @@
       padding: 20px;
     }
 
-    .result-box {
+    .result-box,
+    .evidence-box,
+    .log-box {
       padding: 18px;
       border-radius: 18px;
       background: rgba(87,245,177,0.08);
@@ -856,20 +894,109 @@
       line-height: 1.8;
     }
 
+    .evidence-box {
+      background: rgba(57, 226, 255, 0.08);
+      border-color: rgba(57, 226, 255, 0.26);
+      color: #d9f8ff;
+    }
+
+    .log-box {
+      max-height: 240px;
+      overflow: auto;
+      background: rgba(255,255,255,0.04);
+      border-color: var(--line);
+      color: #cfeaff;
+      font-size: 13px;
+    }
+
     .chart-lines {
       display: grid;
       gap: 16px;
     }
 
     .chart-line label {
-      display: flex;
-      justify-content: space-between;
-      color: #cde9ff;
       font-size: 14px;
     }
 
+    .bit-stream {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 14px;
+    }
 
+    .bit {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      border: 1px solid rgba(57, 226, 255, 0.22);
+      background: rgba(57, 226, 255, 0.08);
+      color: #b9efff;
+      font-size: 12px;
+      font-weight: 900;
+    }
 
+    .bit.one {
+      background: rgba(87,245,177,0.12);
+      border-color: rgba(87,245,177,0.32);
+      color: #c8ffe8;
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 209, 102, 0.08);
+      border: 1px solid rgba(255, 209, 102, 0.22);
+      color: #ffe9ad;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .loading-box {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(57, 226, 255, 0.06);
+      border: 1px solid rgba(57, 226, 255, 0.18);
+      color: #b9efff;
+      font-size: 13px;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid rgba(57, 226, 255, 0.24);
+      border-top-color: var(--cyan);
+      animation: spin 0.8s linear infinite;
+      flex: 0 0 auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .hidden-admin {
+      display: none;
+    }
+
+    .admin-mode .hidden-admin {
+      display: block;
+    }
+
+    .admin-mode .admin-inline {
+      display: inline-flex;
+    }
+
+    .admin-inline {
+      display: none;
+    }
 
     @media (max-width: 1080px) {
       .site-hero,
@@ -904,113 +1031,10 @@
       }
 
       .topbar,
-      .page-header {
+      .page-header,
+      .panel-title {
         flex-direction: column;
         align-items: stretch;
-      }
-    }
-
-
-    .tech-image-grid {
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 22px;
-      align-items: start;
-      margin-top: 22px;
-    }
-
-    .tech-image-card {
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      background: linear-gradient(180deg, rgba(15, 35, 67, 0.9), rgba(8, 22, 42, 0.82));
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-      padding: 22px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .tech-image-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 100% 0%, rgba(57, 226, 255, 0.1), transparent 36%);
-      pointer-events: none;
-    }
-
-    .tech-image-header {
-      position: relative;
-      z-index: 1;
-      margin-bottom: 16px;
-    }
-
-    .tech-image-tag {
-      display: inline-flex;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(57, 226, 255, 0.22);
-      background: rgba(57, 226, 255, 0.08);
-      color: #b9efff;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      margin-bottom: 12px;
-    }
-
-    .tech-image-header h3 {
-      font-size: 20px;
-      line-height: 1.35;
-      margin-bottom: 8px;
-      color: var(--text);
-    }
-
-    .tech-image-header p {
-      color: var(--muted);
-      line-height: 1.75;
-      font-size: 14px;
-    }
-
-    .tech-image-frame {
-      position: relative;
-      z-index: 1;
-      border-radius: 22px;
-      border: 1px solid rgba(109, 183, 255, 0.18);
-      background:
-        linear-gradient(135deg, rgba(57, 226, 255, 0.06), rgba(72, 167, 255, 0.03)),
-        rgba(255, 255, 255, 0.035);
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .tech-image-frame img {
-      width: 100%;
-      height: auto;
-      max-height: 430px;
-      object-fit: contain;
-      display: block;
-      border-radius: 14px;
-      transition: transform 0.3 ease, filter 0.3 ease;
-    }
-
-    .tech-image-frame.compact img {
-      max-height: 320px;
-    }
-
-    .tech-image-card:hover .tech-image-frame img {
-      transform: scale(1.025);
-      filter: brightness(1.08);
-    }
-
-    @media (max-width: 1080px) {
-      .tech-image-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .tech-image-frame img,
-      .tech-image-frame.compact img {
-        max-height: none;
       }
     }
   </style>
@@ -1082,41 +1106,22 @@
         <div class="card">
           <h3>模型水印生成</h3>
           <p>通过离散小波变换 DWT 与鲁棒可逆网络，将秘密图像隐藏到正常图像高频区域，生成视觉上接近无损的水印触发图像。</p>
-          <div class="pill-row">
-            <span class="pill">DWT</span>
-            <span class="pill">可逆网络</span>
-            <span class="pill">高频嵌入</span>
-          </div>
+          <div class="pill-row"><span class="pill">DWT</span><span class="pill">可逆网络</span><span class="pill">高频嵌入</span></div>
         </div>
-
         <div class="card">
           <h3>双密钥后门嵌入</h3>
           <p>模型必须同时接收到水印图像与特定提示文本才会激活隐藏水印，降低单一触发器被猜测、伪造或绕过的风险。</p>
-          <div class="pill-row">
-            <span class="pill">图像密钥</span>
-            <span class="pill">提示密钥</span>
-            <span class="pill">联合触发</span>
-          </div>
+          <div class="pill-row"><span class="pill">图像密钥</span><span class="pill">提示密钥</span><span class="pill">联合触发</span></div>
         </div>
-
         <div class="card">
           <h3>多比特文本水印</h3>
           <p>将用户 ID、模型 ID、时间戳等身份字段编码为二进制序列，再通过多列表词元映射嵌入生成文本。</p>
-          <div class="pill-row">
-            <span class="pill">用户 ID</span>
-            <span class="pill">时间戳</span>
-            <span class="pill">内容指纹</span>
-          </div>
+          <div class="pill-row"><span class="pill">用户 ID</span><span class="pill">时间戳</span><span class="pill">内容指纹</span></div>
         </div>
-
         <div class="card">
           <h3>熵自适应嵌入</h3>
           <p>系统根据生成位置的熵值动态决定嵌入强度和比特数，在高熵位置嵌入更多信息，兼顾文本质量与溯源容量。</p>
-          <div class="pill-row">
-            <span class="pill">熵计算</span>
-            <span class="pill">阈值选择</span>
-            <span class="pill">质量保持</span>
-          </div>
+          <div class="pill-row"><span class="pill">熵计算</span><span class="pill">阈值选择</span><span class="pill">质量保持</span></div>
         </div>
       </div>
 
@@ -1126,7 +1131,6 @@
           <h3>传统单触发水印 vs MaskSource 双密钥水印</h3>
           <p>用于展示 MaskSource 在安全性、隐蔽性、抗伪造能力上的技术优势。</p>
         </div>
-
         <div class="tech-image-frame">
           <img src="1.png" alt="传统单触发水印与 MaskSource 双密钥水印技术优势对比图">
         </div>
@@ -1138,7 +1142,6 @@
           <h3>水印嵌入可逆网络流程图</h3>
           <p>用于展示 DWT、可逆网络、高频嵌入与水印恢复之间的技术流程。</p>
         </div>
-
         <div class="tech-image-frame compact">
           <img src="2.png" alt="水印嵌入可逆网络流程图">
         </div>
@@ -1165,9 +1168,7 @@
             <li>抵抗微调、剪枝、量化等常见模型修改攻击</li>
           </ul>
         </div>
-
         <div class="arch-connector">双盾双溯源</div>
-
         <div class="arch-block">
           <h3>生成内容版权保护子系统</h3>
           <p>针对模型生成文本的身份追踪，强调高容量、低扰动和可恢复。</p>
@@ -1186,76 +1187,17 @@
         <span class="badge">PRACTICAL VALUE</span>
         <h2>落地应用：MaskSource 可以用来做什么</h2>
         <p>
-          该板块用于告诉访问者系统的实际作用。MaskSource 不是单纯展示算法，而是面向模型研发企业、AIGC 平台、内容审核机构和数字资产管理方的版权保护工具，可用于模型确权、内容溯源、风险审计和可信治理。
+          该板块用于告诉访问者系统的实际作用。MaskSource 面向模型研发企业、AIGC 平台、内容审核机构和数字资产管理方，可用于模型确权、内容溯源、风险审计和可信治理。
         </p>
       </div>
 
       <div class="grid cols-3">
-        <div class="card application-card">
-          <div class="number">01</div>
-          <h3>模型确权与维权举证</h3>
-          <p>当私有视觉语言模型被非法复制、二次部署或轻度微调后，管理员可通过预设后门图片与提示语进行黑盒查询。如果模型返回预设水印标签并能恢复所有者身份，即可形成模型归属证据。</p>
-          <div class="pill-row">
-            <span class="pill">模型所有权</span>
-            <span class="pill">黑盒检测</span>
-            <span class="pill">证据输出</span>
-          </div>
-        </div>
-
-        <div class="card application-card">
-          <div class="number">02</div>
-          <h3>AIGC 内容来源追踪</h3>
-          <p>平台在模型生成文本时嵌入用户身份序列，使后续流传的文本即使脱离原平台，也可以通过验证模块提取隐藏比特，判断内容是否由指定模型或指定用户生成。</p>
-          <div class="pill-row">
-            <span class="pill">内容归属</span>
-            <span class="pill">用户追踪</span>
-            <span class="pill">文本验证</span>
-          </div>
-        </div>
-
-        <div class="card application-card">
-          <div class="number">03</div>
-          <h3>平台风控与责任审计</h3>
-          <p>内容平台可将 MaskSource 作为后台风控组件，对可疑内容进行批量检测，识别水印分布、匹配身份字段，并辅助判断内容传播链路和责任主体。</p>
-          <div class="pill-row">
-            <span class="pill">批量检测</span>
-            <span class="pill">风险审计</span>
-            <span class="pill">责任定位</span>
-          </div>
-        </div>
-
-        <div class="card application-card">
-          <div class="number">04</div>
-          <h3>数字资产真伪验证</h3>
-          <p>对于由 AI 生成的图文资产，系统可提供“是否来自受保护模型”“是否携带合法身份水印”“是否疑似被篡改”等判断，辅助数字作品交易、发布与归档。</p>
-          <div class="pill-row">
-            <span class="pill">资产认证</span>
-            <span class="pill">真伪判断</span>
-            <span class="pill">版权归档</span>
-          </div>
-        </div>
-
-        <div class="card application-card">
-          <div class="number">05</div>
-          <h3>负责任 AI 合规支持</h3>
-          <p>在生成式 AI 透明度和可追溯性要求不断提高的背景下，MaskSource 可作为内容标识和来源追踪工具，帮助机构建立更清晰的 AI 内容治理流程。</p>
-          <div class="pill-row">
-            <span class="pill">透明度</span>
-            <span class="pill">可追溯</span>
-            <span class="pill">合规治理</span>
-          </div>
-        </div>
-
-        <div class="card application-card">
-          <div class="number">06</div>
-          <h3>科研演示与技术验证</h3>
-          <p>系统界面可直观展示水印生成、嵌入、验证、身份追溯等环节。</p>
-          <div class="pill-row">
-            <span class="pill">项目展示</span>
-            <span class="pill">答辩演示</span>
-            <span class="pill">原型系统</span>
-          </div>
-        </div>
+        <div class="card application-card"><div class="number">01</div><h3>模型确权与维权举证</h3><p>当私有视觉语言模型被非法复制、二次部署或轻度微调后，管理员可通过预设后门图片与提示语进行黑盒查询。如果模型返回预设水印标签并能恢复所有者身份，即可形成模型归属证据。</p><div class="pill-row"><span class="pill">模型所有权</span><span class="pill">黑盒检测</span><span class="pill">证据输出</span></div></div>
+        <div class="card application-card"><div class="number">02</div><h3>AIGC 内容来源追踪</h3><p>平台在模型生成文本时嵌入用户身份序列，使后续流传的文本即使脱离原平台，也可以通过验证模块提取隐藏比特，判断内容是否由指定模型或指定用户生成。</p><div class="pill-row"><span class="pill">内容归属</span><span class="pill">用户追踪</span><span class="pill">文本验证</span></div></div>
+        <div class="card application-card"><div class="number">03</div><h3>平台风控与责任审计</h3><p>内容平台可将 MaskSource 作为后台风控组件，对可疑内容进行批量检测，识别水印分布、匹配身份字段，并辅助判断内容传播链路和责任主体。</p><div class="pill-row"><span class="pill">批量检测</span><span class="pill">风险审计</span><span class="pill">责任定位</span></div></div>
+        <div class="card application-card"><div class="number">04</div><h3>数字资产真伪验证</h3><p>对于由 AI 生成的图文资产，系统可提供“是否来自受保护模型”“是否携带合法身份水印”“是否疑似被篡改”等判断，辅助数字作品交易、发布与归档。</p><div class="pill-row"><span class="pill">资产认证</span><span class="pill">真伪判断</span><span class="pill">版权归档</span></div></div>
+        <div class="card application-card"><div class="number">05</div><h3>负责任 AI 合规支持</h3><p>在生成式 AI 透明度和可追溯性要求不断提高的背景下，MaskSource 可作为内容标识和来源追踪工具，帮助机构建立更清晰的 AI 内容治理流程。</p><div class="pill-row"><span class="pill">透明度</span><span class="pill">可追溯</span><span class="pill">合规治理</span></div></div>
+        <div class="card application-card"><div class="number">06</div><h3>科研演示与技术验证</h3><p>系统界面可直观展示水印生成、嵌入、验证、身份追溯等环节。</p><div class="pill-row"><span class="pill">项目展示</span><span class="pill">答辩演示</span><span class="pill">原型系统</span></div></div>
       </div>
     </section>
 
@@ -1269,85 +1211,22 @@
       </div>
 
       <div class="grid cols-3">
-        <div class="card">
-          <h3>跨模态双密钥安全机制</h3>
-          <p>系统采用“提示-图像”联合触发方式，只有当水印图像与特定提示文本同时出现时，模型才会激活预设水印响应。相比单一触发器，该机制更难被猜测、伪造或绕过。</p>
-          <div class="pill-row">
-            <span class="pill">图像密钥</span>
-            <span class="pill">提示密钥</span>
-            <span class="pill">联合触发</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>高隐蔽图像水印</h3>
-          <p>图像水印通过 DWT 与可逆网络嵌入到高频区域，在视觉上尽量保持原图质量，减少明显伪影，降低水印被人工观察或自动检测发现的可能性。</p>
-          <div class="pill-row">
-            <span class="pill">DWT</span>
-            <span class="pill">可逆网络</span>
-            <span class="pill">视觉无损</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>高容量身份追踪</h3>
-          <p>内容水印支持嵌入用户 ID、模型 ID、时间戳等多比特身份信息，使系统不只判断“是否含水印”，还能进一步追踪“由谁生成、何时生成、来自哪个模型”。</p>
-          <div class="pill-row">
-            <span class="pill">多比特编码</span>
-            <span class="pill">用户身份</span>
-            <span class="pill">精准溯源</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>熵自适应内容嵌入</h3>
-          <p>系统根据文本生成过程中的熵值动态选择嵌入位置和嵌入强度，在模型输出更灵活的位置承载更多信息，从而兼顾文本自然度和水印容量。</p>
-          <div class="pill-row">
-            <span class="pill">熵计算</span>
-            <span class="pill">动态阈值</span>
-            <span class="pill">质量保持</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>强鲁棒版权验证</h3>
-          <p>模型水印面向微调、剪枝、量化和提示注入等常见攻击场景设计，即使模型被一定程度修改，仍可通过黑盒查询方式完成版权验证。</p>
-          <div class="pill-row">
-            <span class="pill">微调攻击</span>
-            <span class="pill">结构剪枝</span>
-            <span class="pill">黑盒验证</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>全链路证据闭环</h3>
-          <p>系统将模型水印验证、生成内容水印提取、身份序列匹配和检测结论整合到同一平台中，形成从模型资产到生成内容的完整版权证据链。</p>
-          <div class="pill-row">
-            <span class="pill">模型确权</span>
-            <span class="pill">内容追踪</span>
-            <span class="pill">证据闭环</span>
-          </div>
-        </div>
+        <div class="card"><h3>跨模态双密钥安全机制</h3><p>系统采用“提示-图像”联合触发方式，只有当水印图像与特定提示文本同时出现时，模型才会激活预设水印响应。</p><div class="pill-row"><span class="pill">图像密钥</span><span class="pill">提示密钥</span><span class="pill">联合触发</span></div></div>
+        <div class="card"><h3>高隐蔽图像水印</h3><p>图像水印通过 DWT 与可逆网络嵌入到高频区域，在视觉上尽量保持原图质量，减少明显伪影。</p><div class="pill-row"><span class="pill">DWT</span><span class="pill">可逆网络</span><span class="pill">视觉无损</span></div></div>
+        <div class="card"><h3>高容量身份追踪</h3><p>内容水印支持嵌入用户 ID、模型 ID、时间戳等多比特身份信息，使系统不只判断“是否含水印”，还能追踪生成来源。</p><div class="pill-row"><span class="pill">多比特编码</span><span class="pill">用户身份</span><span class="pill">精准溯源</span></div></div>
+        <div class="card"><h3>熵自适应内容嵌入</h3><p>系统根据文本生成过程中的熵值动态选择嵌入位置和嵌入强度，从而兼顾文本自然度和水印容量。</p><div class="pill-row"><span class="pill">熵计算</span><span class="pill">动态阈值</span><span class="pill">质量保持</span></div></div>
+        <div class="card"><h3>强鲁棒版权验证</h3><p>模型水印面向微调、剪枝、量化和提示注入等常见攻击场景设计，即使模型被修改，仍可通过黑盒查询完成版权验证。</p><div class="pill-row"><span class="pill">微调攻击</span><span class="pill">结构剪枝</span><span class="pill">黑盒验证</span></div></div>
+        <div class="card"><h3>全链路证据闭环</h3><p>系统将模型水印验证、生成内容水印提取、身份序列匹配和检测结论整合到同一平台中。</p><div class="pill-row"><span class="pill">模型确权</span><span class="pill">内容追踪</span><span class="pill">证据闭环</span></div></div>
       </div>
 
       <div class="grid cols-2" style="margin-top:18px;">
         <div class="image-placeholder">
-          <p style="text-align:center; font-weight:bold; margin:0 0 10px 0; font-size:15px;">
-            传统单触发水印vsMaskSource双密钥水印对比图
-          </p>
-          <img 
-            src="3.png" 
-            alt="传统单触发水印vsMaskSource双密钥水印对比图" 
-            style="width:100%; max-width:650px; display:block; margin:10px auto 0;">
+          <p style="font-weight:bold; margin:0 0 10px 0; font-size:15px;">传统单触发水印 vs MaskSource 双密钥水印对比图</p>
+          <img src="3.png" alt="传统单触发水印vsMaskSource双密钥水印对比图">
         </div>
         <div class="image-placeholder">
-          <p style="text-align:center; font-weight:bold; margin:0 0 10px 0; font-size:15px;">
-            对抗攻击下原始可逆网络与增强可逆网络的鲁棒性对比图
-          </p>
-          <img 
-            src="4.png" 
-            alt="对抗攻击下原始可逆网络与增强可逆网络的鲁棒性对比图" 
-            style="width:100%; max-width:650px; display:block; margin:10px auto 0;">
+          <p style="font-weight:bold; margin:0 0 10px 0; font-size:15px;">对抗攻击下原始可逆网络与增强可逆网络的鲁棒性对比图</p>
+          <img src="4.png" alt="对抗攻击下原始可逆网络与增强可逆网络的鲁棒性对比图">
         </div>
       </div>
     </section>
@@ -1367,38 +1246,19 @@
           <p>
             随着视觉语言模型广泛应用，模型窃取、生成内容盗用、版权归属模糊和虚假内容传播等问题愈发突出。MaskSource 希望通过“双盾双溯源”体系，为模型所有者、平台运营者和内容使用者提供更可靠的技术支撑。
           </p>
-          <div class="pill-row">
-            <span class="pill">版权保护</span>
-            <span class="pill">模型安全</span>
-            <span class="pill">内容溯源</span>
-            <span class="pill">可信 AI</span>
-          </div>
+          <div class="pill-row"><span class="pill">版权保护</span><span class="pill">模型安全</span><span class="pill">内容溯源</span><span class="pill">可信 AI</span></div>
         </div>
 
         <div class="card">
           <h3>联系我们</h3>
-          <p style="margin-bottom:18px;">
-            以下表单为联系入口，可填写姓名、邮箱、单位和留言内容。
-          </p>
+          <p style="margin-bottom:18px;">以下表单为联系入口，可填写姓名、邮箱、单位和留言内容。</p>
           <form class="contact-form" onsubmit="submitContact(event)">
             <div class="grid cols-2">
-              <div class="field">
-                <label>姓名</label>
-                <input id="contactName" placeholder="请输入您的姓名" />
-              </div>
-              <div class="field">
-                <label>联系方式</label>
-                <input id="contactEmail" placeholder="邮箱 / 电话 / 微信均可" />
-              </div>
+              <div class="field"><label>姓名</label><input id="contactName" placeholder="请输入您的姓名" /></div>
+              <div class="field"><label>联系方式</label><input id="contactEmail" placeholder="邮箱 / 电话 / 微信均可" /></div>
             </div>
-            <div class="field">
-              <label>单位或身份</label>
-              <input id="contactOrg" placeholder="例如：AI模型研发团队 / 内容平台 / 学生团队" />
-            </div>
-            <div class="field">
-              <label>留言内容</label>
-              <textarea id="contactMessage" placeholder="请填写您想了解的内容，例如系统演示、模型版权验证、内容溯源方案、项目合作等。"></textarea>
-            </div>
+            <div class="field"><label>单位或身份</label><input id="contactOrg" placeholder="例如：AI模型研发团队 / 内容平台 / 学生团队" /></div>
+            <div class="field"><label>留言内容</label><textarea id="contactMessage" placeholder="请填写您想了解的内容，例如系统演示、模型版权验证、内容溯源方案、项目合作等。"></textarea></div>
             <button class="btn" type="submit">提交留言</button>
             <p id="contactTip" style="display:none;margin-top:12px;color:#57f5b1;font-size:14px;">留言已成功发送。</p>
           </form>
@@ -1411,7 +1271,7 @@
     </section>
   </section>
 
-  <section class="login-screen" id="loginScreen" style="display:none;">
+  <section class="login-screen" id="loginScreen">
     <div class="brand-block">
       <div class="badge">VLM COPYRIGHT PROTECTION PLATFORM</div>
       <h1 class="brand-title">Mask<span>Source</span></h1>
@@ -1436,17 +1296,11 @@
         <h2 class="form-title">系统登录</h2>
         <p class="form-subtitle">请选择用户身份，进入 MaskSource 版权保护控制台。</p>
         <div class="role-tabs">
-          <button class="active" onclick="switchRole(this)">User</button>
-          <button onclick="switchRole(this)">Admin</button>
+          <button class="active" onclick="switchRole(this, 'User')">User</button>
+          <button onclick="switchRole(this, 'Admin')">Admin</button>
         </div>
-        <div class="field">
-          <label>用户名</label>
-          <input id="username" placeholder="请输入用户名，例如 egnever" autocomplete="username" />
-        </div>
-        <div class="field">
-          <label>密码</label>
-          <input id="password" type="password" placeholder="请输入密码，例如 123456" autocomplete="current-password" />
-        </div>
+        <div class="field"><label>用户名</label><input id="username" placeholder="请输入用户名，例如 egnever" autocomplete="username" /></div>
+        <div class="field"><label>密码</label><input id="password" type="password" placeholder="请输入密码，例如 123456" autocomplete="current-password" /></div>
         <button class="btn" style="width:100%" onclick="loginSystem()">进入系统</button>
         <p id="loginError" style="display:none;margin-top:12px;color:#ffb5c0;font-size:14px;">用户名或密码错误！请重新输入</p>
       </div>
@@ -1454,20 +1308,11 @@
       <div id="registerForm" style="display:none;">
         <h2 class="form-title">账号注册</h2>
         <p class="form-subtitle">创建平台账号，用于模型管理、水印验证与生成内容追踪。</p>
-        <div class="field">
-          <label>用户名</label>
-          <input placeholder="请输入用户名" />
-        </div>
-        <div class="field">
-          <label>密码</label>
-          <input type="password" placeholder="请输入密码" />
-        </div>
-        <div class="field">
-          <label>确认密码</label>
-          <input type="password" placeholder="请再次输入密码" />
-        </div>
+        <div class="field"><label>用户名</label><input id="registerUsername" placeholder="请输入用户名" /></div>
+        <div class="field"><label>密码</label><input id="registerPassword" type="password" placeholder="请输入密码" /></div>
+        <div class="field"><label>确认密码</label><input id="registerPassword2" type="password" placeholder="请再次输入密码" /></div>
         <button class="btn" style="width:100%" onclick="fakeRegister()">立即注册</button>
-        <p id="registerTip" style="display:none;margin-top:12px;color:#57f5b1;font-size:14px;">注册成功。</p>
+        <p id="registerTip" style="display:none;margin-top:12px;color:#57f5b1;font-size:14px;">注册成功，请切换到登录页进入系统。</p>
       </div>
     </div>
   </section>
@@ -1476,10 +1321,7 @@
     <aside class="sidebar">
       <div class="logo">
         <div class="logo-mark">M</div>
-        <div>
-          <strong>MaskSource</strong>
-          <small>版权保护后台</small>
-        </div>
+        <div><strong>MaskSource</strong><small>版权保护后台</small></div>
       </div>
       <div class="nav">
         <button class="active" onclick="showPage('home', this)">首页控制台</button>
@@ -1493,63 +1335,35 @@
 
     <main class="main">
       <div class="topbar">
-        <input class="search" placeholder="搜索模型、任务、水印ID或用户身份..." />
-        <div class="user-chip"><div class="avatar">A</div> admin · User</div>
+        <input class="search" id="globalSearch" placeholder="搜索模型、任务、水印ID或用户身份..." oninput="searchConsole(this.value)" />
+        <div class="user-chip"><div class="avatar" id="avatarLetter">U</div><span id="userChipText">guest · User</span></div>
       </div>
 
       <section class="page active" id="home">
         <div class="page-header">
           <div>
             <h2 class="page-title">VLM版权保护系统</h2>
-            <p class="page-desc">围绕模型版权保护子系统与生成内容版权保护子系统，提供水印嵌入、模型验证、内容溯源与安全分析能力。</p>
+            <p class="page-desc">围绕模型版权保护子系统与生成内容版权保护子系统，提供水印嵌入、模型验证、内容溯源、安全分析与版权证据链输出能力。</p>
           </div>
-          <button class="btn">启动快速检测</button>
+          <button class="btn" onclick="runQuickDetect()">启动快速检测</button>
         </div>
 
         <div class="grid cols-4">
-          <div class="card">
-            <div class="stat-label">今日检测</div>
-            <div class="stat-value">128</div>
-            <div class="stat-note">较昨日 +18.4%</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">版权异常</div>
-            <div class="stat-value">3</div>
-            <div class="stat-note" style="color:var(--warning)">等待复核</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">受保护模型</div>
-            <div class="stat-value">42</div>
-            <div class="stat-note">水印覆盖率 91%</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">活跃用户</div>
-            <div class="stat-value">15</div>
-            <div class="stat-note">身份水印已同步</div>
-          </div>
+          <div class="card"><div class="stat-label">今日检测</div><div class="stat-value" id="statDetect">128</div><div class="stat-note">较昨日 +18.4%</div></div>
+          <div class="card"><div class="stat-label">版权异常</div><div class="stat-value" id="statRisk">3</div><div class="stat-note" style="color:var(--warning)">等待复核</div></div>
+          <div class="card"><div class="stat-label">受保护模型</div><div class="stat-value" id="statModels">42</div><div class="stat-note">水印覆盖率 91%</div></div>
+          <div class="card"><div class="stat-label">活跃用户</div><div class="stat-value" id="statUsers">15</div><div class="stat-note">身份水印已同步</div></div>
         </div>
 
         <div class="grid cols-3" style="margin-top:18px;">
-          <div class="card">
-            <h3>模型版权保护</h3>
-            <p>通过提示-图像双密钥后门机制，实现模型所有权验证与跨模态水印激活。</p>
-            <div class="pill-row"><span class="pill">水印图像</span><span class="pill">水印文本</span><span class="pill">黑盒验证</span></div>
-          </div>
-          <div class="card">
-            <h3>生成内容溯源</h3>
-            <p>在文本生成过程中动态嵌入用户ID、时间戳等身份信息，实现高容量追踪。</p>
-            <div class="pill-row"><span class="pill">多比特编码</span><span class="pill">身份序列</span><span class="pill">水印提取</span></div>
-          </div>
-          <div class="card">
-            <h3>安全鲁棒分析</h3>
-            <p>模拟微调、剪枝与提示注入等攻击，评估水印存活率和检测置信度。</p>
-            <div class="pill-row"><span class="pill">微调攻击</span><span class="pill">结构剪枝</span><span class="pill">提示注入</span></div>
-          </div>
+          <div class="card"><h3>模型版权保护</h3><p>通过提示-图像双密钥后门机制，实现模型所有权验证与跨模态水印激活。</p><div class="pill-row"><span class="pill">水印图像</span><span class="pill">水印文本</span><span class="pill">黑盒验证</span></div></div>
+          <div class="card"><h3>生成内容溯源</h3><p>在文本生成过程中动态嵌入用户ID、模型ID、时间戳等身份信息，实现高容量追踪。</p><div class="pill-row"><span class="pill">多比特编码</span><span class="pill">身份序列</span><span class="pill">水印提取</span></div></div>
+          <div class="card"><h3>安全鲁棒分析</h3><p>模拟微调、剪枝、量化与提示注入等攻击，评估水印存活率、检测置信度和内容质量保持率。</p><div class="pill-row"><span class="pill">微调攻击</span><span class="pill">结构剪枝</span><span class="pill">提示注入</span></div></div>
         </div>
 
         <div class="card" style="margin-top:18px;">
-          <h3>系统流程</h3>
-          <div class="workflow">
+          <div class="panel-title"><h3>系统流程</h3><span class="pill" id="workflowStatus">等待任务</span></div>
+          <div class="workflow" id="workflow">
             <div class="step"><strong>01</strong><span>用户输入图像/文本</span></div>
             <div class="step"><strong>02</strong><span>模型生成内容</span></div>
             <div class="step"><strong>03</strong><span>水印动态嵌入</span></div>
@@ -1557,15 +1371,27 @@
             <div class="step"><strong>05</strong><span>版权验证与溯源</span></div>
           </div>
         </div>
+
+        <div class="card" style="margin-top:18px;">
+          <div class="panel-title"><h3>推荐使用顺序</h3><span class="pill">Workflow Guide</span></div>
+          <p>建议按照完整业务链路体验系统：先使用授权模型生成带有身份水印的内容，再进行内容溯源与模型确权，最后输出版权证据链。</p>
+          <div class="notice">推荐顺序：① 多模态交互生成内容 → ② 复制生成文本到水印验证 → ③ 提取内容身份序列 → ④ 输入模型确权样例 → ⑤ 验证模型所有权 → ⑥ 导出版权证据链。</div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <div class="panel-title"><h3>最近证据摘要</h3><span class="pill">Evidence Chain</span></div>
+          <div id="homeEvidence" class="evidence-box">暂无检测任务。可在“多模态交互”中生成含水印内容，或在“水印验证”中执行模型/内容验证。</div>
+        </div>
       </section>
 
       <section class="page" id="dialog">
         <div class="page-header">
           <div>
             <h2 class="page-title">多模态交互</h2>
-            <p class="page-desc">模拟视觉语言模型的图文交互过程，可开启生成内容水印嵌入，用于展示平台的内容溯源能力。</p>
+            <p class="page-desc">模拟视觉语言模型的图文交互过程。生成时自动嵌入用户 ID、模型 ID、时间戳与多比特身份序列，后续可进入水印验证模块完成提取与溯源。</p>
           </div>
         </div>
+
         <div class="grid cols-2">
           <div class="card">
             <div class="panel-title"><h3>输入区域</h3><span class="pill">Watermark ON</span></div>
@@ -1577,19 +1403,40 @@
               <label>Prompt</label>
               <textarea id="dialogPrompt">请描述图像内容，并生成一段版权保护说明。</textarea>
             </div>
-            <button class="btn" onclick="generateMultimodalResult()">开始生成</button>
+            <div class="field">
+              <label>选择授权模型</label>
+              <select id="dialogModel">
+                <option value="BLIP-Protected">BLIP-Protected · Image-to-Text</option>
+                <option value="LLaVA-Trace">LLaVA-Trace · Visual Chat</option>
+                <option value="ViT-GPT2-Lab">ViT-GPT2-Lab · Captioning</option>
+              </select>
+            </div>
+            <div class="action-row">
+              <button class="btn" onclick="generateMultimodalResult()">开始生成并嵌入水印</button>
+              <button class="btn secondary" onclick="fillDialogDemo()">填入标准样例</button>
+            </div>
           </div>
+
           <div class="card">
             <div class="panel-title"><h3>模型输出</h3><span id="dialogStatus" class="status warn">等待生成</span></div>
-            <div id="dialogResult" style="display:none;">
-            <p>该内容由 MaskSource 保护模型生成，输出文本中已动态嵌入用户身份序列。后续可通过水印验证模块提取用户ID、生成时间与版权归属信息。</p>
-            <div class="result-box" style="margin-top:18px;">
-              水印状态：Active<br/>
-              用户标识：USR-admin-0427<br/>
-              嵌入策略：Entropy Adaptive Multi-bit<br/>
-              内容质量：High Fidelity
+            <div id="dialogResult" style="display:none;"></div>
+            <div id="dialogLoading" class="loading-box"><span class="spinner"></span><span>模型正在生成内容并嵌入身份水印...</span></div>
+            <div class="action-row" style="margin-top:14px;">
+              <button class="btn secondary" onclick="copyGeneratedTextToVerify()">复制生成文本到验证页</button>
+              <button class="btn secondary" onclick="showPage('verify', document.querySelector('.nav button:nth-child(4)'))">前往水印验证</button>
             </div>
-            </div>
+          </div>
+        </div>
+
+        <div class="grid cols-2" style="margin-top:18px;">
+          <div class="card">
+            <div class="panel-title"><h3>身份比特流</h3><span class="pill">Multi-bit Trace</span></div>
+            <p>系统将用户 ID、模型 ID、时间戳等字段编码为二进制序列，并在文本采样阶段通过熵自适应策略嵌入。</p>
+            <div id="bitStream" class="bit-stream"></div>
+          </div>
+          <div class="card">
+            <div class="panel-title"><h3>嵌入日志</h3><span class="pill">Runtime Log</span></div>
+            <div id="dialogLog" class="log-box">暂无生成日志。</div>
           </div>
         </div>
       </section>
@@ -1598,46 +1445,32 @@
         <div class="page-header">
           <div>
             <h2 class="page-title">模型管理</h2>
-            <p class="page-desc">普通用户可浏览和切换授权模型；管理员可上传模型、维护版本和配置模型所有权密钥。</p>
+            <p class="page-desc">普通用户可浏览和切换授权模型；管理员可上传模型、维护版本、配置模型所有权密钥，并查看最近验证状态。</p>
           </div>
-          <button class="btn">新增模型</button>
+          <button class="btn admin-inline" onclick="addDemoModel()">新增模型</button>
         </div>
 
         <div class="card">
           <table>
             <thead>
-              <tr>
-                <th>模型名称</th>
-                <th>类型</th>
-                <th>水印状态</th>
-                <th>版本</th>
-                <th>最近验证</th>
-              </tr>
+              <tr><th>模型名称</th><th>类型</th><th>水印状态</th><th>版本</th><th>最近验证</th><th>操作</th></tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>BLIP-Protected</td>
-                <td>Image-to-Text</td>
-                <td><span class="status ok">Active</span></td>
-                <td>v2.1</td>
-                <td>2026-05-05</td>
-              </tr>
-              <tr>
-                <td>LLaVA-Trace</td>
-                <td>Visual Chat</td>
-                <td><span class="status ok">Active</span></td>
-                <td>v1.8</td>
-                <td>2026-05-04</td>
-              </tr>
-              <tr>
-                <td>ViT-GPT2-Lab</td>
-                <td>Captioning</td>
-                <td><span class="status warn">Pending</span></td>
-                <td>v0.9</td>
-                <td>待验证</td>
-              </tr>
+            <tbody id="modelTableBody">
+              <tr><td>BLIP-Protected</td><td>Image-to-Text</td><td><span class="status ok">Active</span></td><td>v2.1</td><td>2026-05-05</td><td><button class="btn small secondary" onclick="selectModel('BLIP-Protected')">选择</button></td></tr>
+              <tr><td>LLaVA-Trace</td><td>Visual Chat</td><td><span class="status ok">Active</span></td><td>v1.8</td><td>2026-05-04</td><td><button class="btn small secondary" onclick="selectModel('LLaVA-Trace')">选择</button></td></tr>
+              <tr><td>ViT-GPT2-Lab</td><td>Captioning</td><td><span class="status warn">Pending</span></td><td>v0.9</td><td>待验证</td><td><button class="btn small secondary" onclick="selectModel('ViT-GPT2-Lab')">选择</button></td></tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="card hidden-admin" style="margin-top:18px;">
+          <div class="panel-title"><h3>管理员密钥配置</h3><span class="pill">Admin Only</span></div>
+          <div class="grid cols-3">
+            <div class="field"><label>模型所有者 ID</label><input id="ownerIdInput" value="OWNER-MaskSource-Team" /></div>
+            <div class="field"><label>提示密钥 Prompt Key</label><input id="promptKeyInput" value="MASKSOURCE_OWNER_TRIGGER" /></div>
+            <div class="field"><label>图像密钥 Image Key</label><input id="imageKeyInput" value="IMG-DWT-KEY-0427" /></div>
+          </div>
+          <button class="btn" onclick="saveOwnerKeys()">保存所有权密钥</button>
         </div>
       </section>
 
@@ -1645,44 +1478,44 @@
         <div class="page-header">
           <div>
             <h2 class="page-title">水印验证</h2>
-            <p class="page-desc">支持模型水印验证与生成内容水印验证，输出可解释的匹配指标和追溯结果。</p>
+            <p class="page-desc">支持模型水印验证与生成内容水印验证，输出可解释的匹配指标、汉明距离、BER、身份字段和版权证据链。</p>
           </div>
         </div>
 
         <div class="grid cols-2">
           <div class="card">
-            <div class="panel-title"><h3>模型水印验证</h3><span class="pill">Admin View</span></div>
+            <div class="panel-title"><h3>模型水印验证</h3><span class="pill">Model Ownership</span></div>
             <label class="upload-box" for="modelWatermarkImage" style="cursor:pointer;">
               <input id="modelWatermarkImage" type="file" accept="image/png,image/jpeg" style="display:none" onchange="showFileName(this, 'modelVerifyFileName')" />
               <span id="modelVerifyFileName">点击上传预定义后门图片<br/>并输入对应 Prompt</span>
             </label>
-            <div class="field" style="margin-top:16px;">
-              <label>触发 Prompt</label>
-              <input id="modelVerifyPrompt" placeholder="请输入预设触发提示语" />
+            <div class="field" style="margin-top:16px;"><label>触发 Prompt</label><input id="modelVerifyPrompt" placeholder="请输入预设触发提示语，例如 MASKSOURCE_OWNER_TRIGGER" /></div>
+            <div class="action-row">
+              <button class="btn" onclick="verifyModelWatermark()">验证模型所有权</button>
+              <button class="btn secondary" onclick="fillModelVerifyDemo()">填入模型确权样例</button>
             </div>
-            <button class="btn" onclick="verifyModelWatermark()">验证模型所有权</button>
-            <div id="modelVerifyResult" class="result-box" style="display:none;margin-top:18px;">
-              验证结果：通过<br/>
-              水印标签：MaskSource-Owner-0427<br/>
-              所有者身份：项目管理中心 / MaskSource Team<br/>
-              置信度：98.7%<br/>
-              结论：目标模型高置信度匹配预设双密钥水印
-            </div>
+            <div id="modelVerifyLoading" class="loading-box"><span class="spinner"></span><span>正在进行双密钥黑盒验证...</span></div>
+            <div id="modelVerifyResult" class="result-box" style="display:none;margin-top:18px;"></div>
           </div>
 
           <div class="card">
-            <div class="panel-title"><h3>内容水印验证</h3><span class="pill">Trace View</span></div>
-            <div class="field">
-              <label>待检测文本</label>
-              <textarea id="contentVerifyText" placeholder="粘贴需要验证的生成文本..."></textarea>
+            <div class="panel-title"><h3>内容水印验证</h3><span class="pill">Content Trace</span></div>
+            <div class="field"><label>待检测文本</label><textarea id="contentVerifyText" placeholder="粘贴需要验证的生成文本。也可以先在多模态交互中生成内容，再回到这里提取身份序列。"></textarea></div>
+            <div class="action-row">
+              <button class="btn" onclick="verifyContentWatermark()">提取身份序列</button>
+              <button class="btn secondary" onclick="fillContentDemoText()">填入内容溯源样例</button>
             </div>
-            <button class="btn" onclick="verifyContentWatermark()">提取身份序列</button>
-            <div id="contentVerifyResult" class="result-box" style="display:none;margin-top:18px;">
-              匹配度：96.2%<br/>
-              汉明距离：0.038<br/>
-              提取身份：USR-admin-0427<br/>
-              结论：高置信度携带合法水印
-            </div>
+            <div id="contentVerifyLoading" class="loading-box"><span class="spinner"></span><span>正在提取多比特身份序列...</span></div>
+            <div id="contentVerifyResult" class="result-box" style="display:none;margin-top:18px;"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <div class="panel-title"><h3>版权证据链输出</h3><span id="evidenceStatus" class="status warn">等待验证</span></div>
+          <div id="evidenceBox" class="evidence-box">完成模型水印验证或内容水印验证后，系统将在此生成包含模型归属、内容来源、用户身份、时间戳和检测指标的证据链摘要。</div>
+          <div class="action-row" style="margin-top:14px;">
+            <button class="btn secondary" onclick="copyEvidence()">复制证据链</button>
+            <button class="btn secondary" onclick="exportEvidence()">导出本地报告</button>
           </div>
         </div>
       </section>
@@ -1691,75 +1524,68 @@
         <div class="page-header">
           <div>
             <h2 class="page-title">安全分析</h2>
-            <p class="page-desc">用于展示水印鲁棒性、隐蔽性、内容质量和攻击场景下的性能变化。</p>
+            <p class="page-desc">用于展示水印鲁棒性、隐蔽性、内容质量和攻击场景下的性能变化。点击攻击按钮可模拟微调、剪枝、量化与提示注入对检测指标的影响。</p>
           </div>
         </div>
 
         <div class="grid cols-2">
           <div class="card">
-            <h3>模型侧鲁棒性</h3>
+            <div class="panel-title"><h3>模型侧鲁棒性</h3><span class="pill">Robustness</span></div>
             <div class="chart-lines">
-              <div class="chart-line"><label><span>微调攻击后水印存活率</span><strong>97%</strong></label><div class="bar"><span style="--w:97%"></span></div></div>
-              <div class="chart-line"><label><span>结构化剪枝后验证成功率</span><strong>94%</strong></label><div class="bar"><span style="--w:94%"></span></div></div>
-              <div class="chart-line"><label><span>正常任务性能保持</span><strong>99%</strong></label><div class="bar"><span style="--w:99%"></span></div></div>
+              <div class="chart-line"><label><span>微调攻击后水印存活率</span><strong id="fineTuneMetric">97%</strong></label><div class="bar"><span id="fineTuneBar" style="--w:97%"></span></div></div>
+              <div class="chart-line"><label><span>结构化剪枝后验证成功率</span><strong id="pruneMetric">94%</strong></label><div class="bar"><span id="pruneBar" style="--w:94%"></span></div></div>
+              <div class="chart-line"><label><span>正常任务性能保持</span><strong id="taskMetric">99%</strong></label><div class="bar"><span id="taskBar" style="--w:99%"></span></div></div>
+            </div>
+            <div class="action-row" style="margin-top:18px;">
+              <button class="btn small secondary" onclick="simulateAttack('finetune')">模拟微调</button>
+              <button class="btn small secondary" onclick="simulateAttack('prune')">模拟剪枝</button>
+              <button class="btn small secondary" onclick="simulateAttack('quantize')">模拟量化</button>
             </div>
           </div>
 
           <div class="card">
-            <h3>内容侧溯源性能</h3>
+            <div class="panel-title"><h3>内容侧溯源性能</h3><span class="pill">Traceability</span></div>
             <div class="chart-lines">
-              <div class="chart-line"><label><span>身份序列提取准确率</span><strong>96%</strong></label><div class="bar"><span style="--w:96%"></span></div></div>
-              <div class="chart-line"><label><span>文本质量保持</span><strong>93%</strong></label><div class="bar"><span style="--w:93%"></span></div></div>
-              <div class="chart-line"><label><span>多比特容量提升</span><strong>88%</strong></label><div class="bar"><span style="--w:88%"></span></div></div>
+              <div class="chart-line"><label><span>身份序列提取准确率</span><strong id="identityMetric">96%</strong></label><div class="bar"><span id="identityBar" style="--w:96%"></span></div></div>
+              <div class="chart-line"><label><span>文本质量保持</span><strong id="qualityMetric">93%</strong></label><div class="bar"><span id="qualityBar" style="--w:93%"></span></div></div>
+              <div class="chart-line"><label><span>多比特容量提升</span><strong id="capacityMetric">88%</strong></label><div class="bar"><span id="capacityBar" style="--w:88%"></span></div></div>
+            </div>
+            <div class="action-row" style="margin-top:18px;">
+              <button class="btn small secondary" onclick="simulateAttack('rewrite')">模拟文本改写</button>
+              <button class="btn small secondary" onclick="simulateAttack('copy')">模拟复制传播</button>
+              <button class="btn small danger" onclick="resetAnalysis()">重置分析</button>
             </div>
           </div>
         </div>
-        
+
+        <div class="card" style="margin-top:18px;">
+          <div class="panel-title"><h3>分析日志</h3><span class="pill">Attack Simulation</span></div>
+          <div id="analysisLog" class="log-box">暂无攻击模拟记录。</div>
+        </div>
       </section>
 
       <section class="page" id="settings">
         <div class="page-header">
           <div>
             <h2 class="page-title">系统设置</h2>
-            <p class="page-desc">配置水印强度、熵值阈值、验证阈值与界面偏好。普通用户只展示基础设置，管理员可访问算法参数。</p>
+            <p class="page-desc">配置水印强度、熵值阈值、验证阈值与界面偏好。普通用户展示基础设置，管理员可访问算法参数。</p>
           </div>
         </div>
 
         <div class="grid cols-2">
           <div class="card">
             <h3>水印参数</h3>
-            <div class="field">
-              <label>水印强度 Delta</label>
-              <input value="2.0" />
-            </div>
-            <div class="field">
-              <label>熵值阈值 Epsilon</label>
-              <input value="0.75" />
-            </div>
-            <div class="field">
-              <label>验证匹配阈值</label>
-              <input value="0.90" />
-            </div>
-            <button class="btn">保存参数</button>
+            <div class="field"><label>水印强度 Delta</label><input id="deltaInput" value="2.0" /></div>
+            <div class="field"><label>熵值阈值 Epsilon</label><input id="epsilonInput" value="0.75" /></div>
+            <div class="field"><label>验证匹配阈值</label><input id="thresholdInput" value="0.90" /></div>
+            <button class="btn" onclick="saveSettings()">保存参数</button>
+            <div id="settingsTip" class="notice" style="display:none;">参数已保存，并同步到后续生成与验证流程。</div>
           </div>
 
           <div class="card">
             <h3>界面偏好</h3>
-            <div class="field">
-              <label>主题模式</label>
-              <select>
-                <option>深色科技风</option>
-                <option>浅色演示风</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>默认首页</label>
-              <select>
-                <option>首页控制台</option>
-                <option>多模态交互</option>
-                <option>水印验证</option>
-              </select>
-            </div>
+            <div class="field"><label>主题模式</label><select id="themeSelect"><option>深色科技风</option><option>浅色演示风</option></select></div>
+            <div class="field"><label>默认首页</label><select id="defaultPageSelect"><option value="home">首页控制台</option><option value="dialog">多模态交互</option><option value="verify">水印验证</option></select></div>
             <button class="btn secondary" onclick="logoutSystem()">退出到官网</button>
           </div>
         </div>
@@ -1768,10 +1594,33 @@
   </section>
 
   <script>
+    const appState = {
+      role: "User",
+      username: "guest",
+      selectedModel: "BLIP-Protected",
+      ownerId: "OWNER-MaskSource-Team",
+      promptKey: "MASKSOURCE_OWNER_TRIGGER",
+      imageKey: "IMG-DWT-KEY-0427",
+      settings: {
+        delta: 2.0,
+        epsilon: 0.75,
+        threshold: 0.90
+      },
+      context: null,
+      modelVerified: false,
+      contentVerified: false,
+      evidenceText: ""
+    };
+
     function openLogin() {
+      resetSessionState();
       document.getElementById("officialSite").style.display = "none";
       document.getElementById("loginScreen").style.display = "grid";
       document.getElementById("dashboard").style.display = "none";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("loginError").style.display = "none";
+      switchAuth("login", document.querySelector(".login-tabs button:first-child"));
       window.scrollTo(0, 0);
     }
 
@@ -1779,37 +1628,34 @@
       const loginForm = document.getElementById("loginForm");
       const registerForm = document.getElementById("registerForm");
       const tabs = document.querySelectorAll(".login-tabs button");
-
       tabs.forEach(tab => tab.classList.remove("active"));
-      if (button) {
-        button.classList.add("active");
-      }
-
-      if (type === "login") {
-        loginForm.style.display = "block";
-        registerForm.style.display = "none";
-      } else {
-        loginForm.style.display = "none";
-        registerForm.style.display = "block";
-      }
+      if (button) button.classList.add("active");
+      loginForm.style.display = type === "login" ? "block" : "none";
+      registerForm.style.display = type === "login" ? "none" : "block";
     }
 
-    function switchRole(button) {
+    function switchRole(button, role) {
       const roleButtons = document.querySelectorAll(".role-tabs button");
       roleButtons.forEach(item => item.classList.remove("active"));
       button.classList.add("active");
+      appState.role = role || button.textContent.trim();
     }
 
     function loginSystem() {
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
       const error = document.getElementById("loginError");
-
       if ((username === "egnever" && password === "123456") || (username.length > 0 && password.length > 0)) {
+        appState.username = username || "guest";
+        resetSessionState();
         document.getElementById("officialSite").style.display = "none";
         document.getElementById("loginScreen").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
+        document.body.classList.toggle("admin-mode", appState.role === "Admin");
+        document.getElementById("avatarLetter").textContent = appState.role === "Admin" ? "A" : "U";
+        document.getElementById("userChipText").textContent = `${appState.username} · ${appState.role}`;
         error.style.display = "none";
+        refreshContext(true);
         window.scrollTo(0, 0);
       } else {
         error.style.display = "block";
@@ -1817,18 +1663,28 @@
     }
 
     function fakeRegister() {
-      document.getElementById("registerTip").style.display = "block";
+      const user = document.getElementById("registerUsername").value.trim();
+      const pass1 = document.getElementById("registerPassword").value.trim();
+      const pass2 = document.getElementById("registerPassword2").value.trim();
+      const tip = document.getElementById("registerTip");
+      if (!user || !pass1 || pass1 !== pass2) {
+        tip.style.display = "block";
+        tip.style.color = "#ffb5c0";
+        tip.textContent = "请填写用户名，并确认两次密码一致。";
+        return;
+      }
+      tip.style.display = "block";
+      tip.style.color = "#57f5b1";
+      tip.textContent = "注册成功，请切换到登录页进入系统。";
     }
 
     function showPage(pageId, button) {
       const pages = document.querySelectorAll(".page");
       const navButtons = document.querySelectorAll(".nav button");
-
       pages.forEach(page => page.classList.remove("active"));
       navButtons.forEach(nav => nav.classList.remove("active"));
-
       document.getElementById(pageId).classList.add("active");
-      button.classList.add("active");
+      if (button) button.classList.add("active");
       window.scrollTo(0, 0);
     }
 
@@ -1836,7 +1692,6 @@
       event.preventDefault();
       document.getElementById("contactTip").style.display = "block";
     }
-
 
     function showFileName(input, targetId) {
       const target = document.getElementById(targetId);
@@ -1846,26 +1701,524 @@
       }
     }
 
+    function rand(min, max, decimals = 0) {
+      const value = Math.random() * (max - min) + min;
+      return Number(value.toFixed(decimals));
+    }
+
+    function pad(num, length) {
+      return String(num).padStart(length, "0");
+    }
+
+    function nowText() {
+      return new Date().toLocaleString("zh-CN", { hour12: false });
+    }
+
+    function generateBits(seedText, length = 32) {
+      let hash = 0;
+      for (let i = 0; i < seedText.length; i++) {
+        hash = ((hash << 5) - hash + seedText.charCodeAt(i)) | 0;
+      }
+      const bits = [];
+      for (let i = 0; i < length; i++) {
+        const bit = Math.abs((hash >> (i % 16)) + i * 17 + seedText.length) % 2;
+        bits.push(bit);
+      }
+      return bits;
+    }
+
+    function refreshContext(forceNew = true) {
+      if (!appState.context || forceNew) {
+        const userPart = appState.username.replace(/[^a-zA-Z0-9]/g, "").slice(0, 8) || "guest";
+        const modelPart = appState.selectedModel.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10);
+        const traceNumber = pad(rand(1000, 9999), 4);
+        const timestamp = nowText();
+        const userId = `USR-${userPart}-${traceNumber}`;
+        const modelId = `MODEL-${modelPart}-${pad(rand(10, 99), 2)}`;
+        const sourceId = `SRC-${Date.now().toString().slice(-8)}`;
+        const matchRate = rand(94.2, 99.4, 2);
+        const confidence = rand(95.1, 99.7, 2);
+        const hamming = rand(0.012, 0.049, 3);
+        const ber = rand(0.006, 0.038, 3);
+        const seed = `${userId}|${modelId}|${timestamp}|${sourceId}`;
+        appState.context = {
+          userId,
+          modelId,
+          sourceId,
+          timestamp,
+          matchRate,
+          confidence,
+          hamming,
+          ber,
+          entropy: rand(0.76, 0.93, 2),
+          capacity: rand(88, 96, 1),
+          strategy: "Entropy Adaptive Multi-bit",
+          bits: generateBits(seed, 40)
+        };
+      }
+      return appState.context;
+    }
+
+    function setWorkflowStep(index) {
+      const steps = document.querySelectorAll("#workflow .step");
+      steps.forEach((step, i) => step.classList.toggle("active-step", i <= index));
+      document.getElementById("workflowStatus").textContent = index >= 4 ? "流程完成" : "处理中";
+    }
+
+    function renderBits(bits) {
+      const container = document.getElementById("bitStream");
+      if (!container) return;
+      container.innerHTML = bits.map(bit => `<span class="bit ${bit === 1 ? "one" : ""}">${bit}</span>`).join("");
+    }
+
+    function logLine(targetId, lines) {
+      const box = document.getElementById(targetId);
+      if (!box) return;
+      box.innerHTML = lines.map(line => `<div>${line}</div>`).join("");
+    }
+
     function generateMultimodalResult() {
+      const prompt = document.getElementById("dialogPrompt").value.trim();
+      const selected = document.getElementById("dialogModel").value;
+      const imageInput = document.getElementById("dialogImage");
+      const imageLabel = document.getElementById("dialogFileName").innerHTML;
+      const hasImage = imageInput.files.length > 0 || imageLabel.includes("trigger_owner.png") || imageLabel.includes("已选择文件");
+      if (!hasImage) {
+        alert("请先上传图片，或点击“填入标准样例”使用系统样例图片。 ");
+        return;
+      }
+      if (!prompt.includes("MaskSource") && !prompt.includes("版权保护")) {
+        alert("请输入与版权保护相关的任务描述，或点击“填入标准样例”。 ");
+        return;
+      }
+      appState.selectedModel = selected;
+      const ctx = refreshContext(true);
       const result = document.getElementById("dialogResult");
       const status = document.getElementById("dialogStatus");
-      result.style.display = "block";
-      status.className = "status ok";
-      status.textContent = "已嵌入水印";
+      const loading = document.getElementById("dialogLoading");
+
+      result.style.display = "none";
+      loading.style.display = "flex";
+      status.className = "status warn";
+      status.textContent = "生成中";
+
+      setTimeout(() => {
+        const generatedText = `该内容由 MaskSource 授权视觉语言模型 ${selected} 生成，系统在生成过程中嵌入了用户身份序列与模型标识信息，可用于后续版权追踪、模型归属判断与责任审计。`;
+        appState.generatedText = generatedText;
+
+        result.innerHTML = `
+          <p id="generatedTextForCopy">${generatedText}</p>
+          <div class="result-box" style="margin-top:18px;">
+            水印状态：Active<br/>
+            用户 ID：${ctx.userId}<br/>
+            模型 ID：${ctx.modelId}<br/>
+            来源 ID：${ctx.sourceId}<br/>
+            生成时间：${ctx.timestamp}<br/>
+            嵌入策略：${ctx.strategy}<br/>
+            平均熵值：${ctx.entropy}<br/>
+            内容质量：High Fidelity
+          </div>
+          <div class="notice">下一步：点击“复制生成文本到验证页”，进入“水印验证”页面提取隐藏身份信息并生成版权证据链。</div>
+        `;
+        loading.style.display = "none";
+        result.style.display = "block";
+        status.className = "status ok";
+        status.textContent = "已嵌入水印";
+        renderBits(ctx.bits);
+        logLine("dialogLog", [
+          `[${nowText()}] 接收图像/Prompt 输入`,
+          `[${nowText()}] 选择授权模型：${selected}`,
+          `[${nowText()}] 计算生成位置熵值：${ctx.entropy}`,
+          `[${nowText()}] 编码身份序列：${ctx.userId}`,
+          `[${nowText()}] 通过多列表词元映射完成嵌入`,
+          `[${nowText()}] 生成含水印内容并登记来源 ID：${ctx.sourceId}`
+        ]);
+        setWorkflowStep(3);
+        updateHomeEvidence("已生成含水印内容，等待验证模块提取身份序列。", ctx);
+      }, 1200);
     }
 
     function verifyModelWatermark() {
-      document.getElementById("modelVerifyResult").style.display = "block";
+      const ctx = refreshContext(false);
+      const prompt = document.getElementById("modelVerifyPrompt").value.trim();
+      const fileInput = document.getElementById("modelWatermarkImage");
+      const fileLabel = document.getElementById("modelVerifyFileName").innerHTML;
+      const imageSelected = fileInput.files.length > 0 || fileLabel.includes("trigger_owner.png");
+      const isDemoImage = fileLabel.includes("trigger_owner.png");
+      const isPromptKey = prompt === appState.promptKey;
+      const box = document.getElementById("modelVerifyResult");
+      const loading = document.getElementById("modelVerifyLoading");
+
+      box.style.display = "none";
+      loading.style.display = "flex";
+
+      setTimeout(() => {
+        loading.style.display = "none";
+
+        if (!imageSelected || !prompt) {
+          box.innerHTML = `
+            验证结果：未通过<br/>
+            原因：模型水印验证必须同时提供预定义后门图片与触发 Prompt。<br/>
+            当前状态：${imageSelected ? "已提供图片" : "未提供后门图片"} / ${prompt ? "已提供 Prompt" : "未提供 Prompt"}<br/>
+            建议：请点击“填入模型确权样例”，使用系统登记的后门图片样例完成验证。
+          `;
+          box.style.display = "block";
+          appState.modelVerified = false;
+          document.getElementById("evidenceStatus").className = "status off";
+          document.getElementById("evidenceStatus").textContent = "验证失败";
+          return;
+        }
+
+        if (!isDemoImage || !isPromptKey) {
+          box.innerHTML = `
+            验证结果：未通过<br/>
+            原因：当前图片或 Prompt 未命中系统预置的双密钥触发条件。<br/>
+            检测说明：普通图片不会触发模型所有权水印，必须使用受保护模型登记的预定义后门图片与对应 Prompt Key。<br/>
+            建议：请点击“填入模型确权样例”，使用系统登记样例继续验证。
+          `;
+          box.style.display = "block";
+          appState.modelVerified = false;
+          document.getElementById("evidenceStatus").className = "status off";
+          document.getElementById("evidenceStatus").textContent = "验证失败";
+          return;
+        }
+
+        box.innerHTML = `
+          验证结果：通过<br/>
+          验证模式：提示-图像双密钥黑盒查询<br/>
+          目标模型：${appState.selectedModel}<br/>
+          模型 ID：${ctx.modelId}<br/>
+          水印标签：MaskSource-Owner-${ctx.modelId.split("-").pop()}<br/>
+          所有者身份：${appState.ownerId}<br/>
+          图像密钥：${appState.imageKey}<br/>
+          提示密钥：${prompt}<br/>
+          置信度：${ctx.confidence}%<br/>
+          结论：目标模型高置信度匹配预设双密钥水印，可作为模型归属证据。
+        `;
+        box.style.display = "block";
+        appState.modelVerified = true;
+        setWorkflowStep(4);
+        buildEvidenceChain();
+      }, 1300);
     }
 
     function verifyContentWatermark() {
-      document.getElementById("contentVerifyResult").style.display = "block";
+      const ctx = refreshContext(false);
+      const text = document.getElementById("contentVerifyText").value.trim();
+      const box = document.getElementById("contentVerifyResult");
+      const loading = document.getElementById("contentVerifyLoading");
+      const valid = text.includes("MaskSource") && text.includes("身份序列") && (text.includes("版权追踪") || text.includes("责任审计") || text.includes("模型归属"));
+
+      box.style.display = "none";
+      loading.style.display = "flex";
+
+      setTimeout(() => {
+        if (!valid) {
+          loading.style.display = "none";
+          box.innerHTML = `
+            验证结果：未通过<br/>
+            原因：当前文本未检测到系统样例中的合法水印特征。<br/>
+            建议：请先在“多模态交互”页面生成含水印文本，或点击“填入内容溯源样例”。<br/>
+            说明：系统会根据水印特征、身份序列与语义标识综合判断内容来源。
+          `;
+          box.style.display = "block";
+          appState.contentVerified = false;
+          document.getElementById("evidenceStatus").className = "status off";
+          document.getElementById("evidenceStatus").textContent = "验证失败";
+          return;
+        }
+
+        const textBonus = Math.min(text.length / 200, 1.2);
+        const matchRate = Math.min(99.8, Number((ctx.matchRate + textBonus).toFixed(2)));
+        const hamming = Math.max(0.006, Number((ctx.hamming - textBonus / 100).toFixed(3)));
+        const ber = Math.max(0.003, Number((ctx.ber - textBonus / 120).toFixed(3)));
+
+        box.innerHTML = `
+          验证结果：通过<br/>
+          匹配度：${matchRate}%<br/>
+          汉明距离：${hamming}<br/>
+          BER：${ber}<br/>
+          提取用户 ID：${ctx.userId}<br/>
+          提取模型 ID：${ctx.modelId}<br/>
+          来源 ID：${ctx.sourceId}<br/>
+          生成时间：${ctx.timestamp}<br/>
+          解码策略：Entropy Adaptive Multi-bit<br/>
+          结论：高置信度携带合法内容水印，可追踪到指定用户与指定模型。
+        `;
+        loading.style.display = "none";
+        box.style.display = "block";
+        appState.contentVerified = true;
+        ctx.matchRate = matchRate;
+        ctx.hamming = hamming;
+        ctx.ber = ber;
+        setWorkflowStep(4);
+        buildEvidenceChain();
+      }, 1100);
+    }
+
+    function buildEvidenceChain() {
+      const ctx = refreshContext(false);
+      const status = document.getElementById("evidenceStatus");
+      const box = document.getElementById("evidenceBox");
+      const modelFlag = appState.modelVerified ? "✔ 已完成" : "○ 未执行";
+      const contentFlag = appState.contentVerified ? "✔ 已完成" : "○ 未执行";
+      const conclusion = appState.modelVerified && appState.contentVerified
+        ? "模型归属与内容来源均已完成验证，证据链闭环成立。"
+        : "已生成部分证据，建议继续完成模型确权与内容溯源两类验证。";
+
+      appState.evidenceText = [
+        "MaskSource 版权证据链报告",
+        `生成时间：${nowText()}`,
+        `模型确权：${modelFlag}`,
+        `内容溯源：${contentFlag}`,
+        `所有者：${appState.ownerId}`,
+        `模型名称：${appState.selectedModel}`,
+        `模型 ID：${ctx.modelId}`,
+        `用户 ID：${ctx.userId}`,
+        `来源 ID：${ctx.sourceId}`,
+        `原始生成时间：${ctx.timestamp}`,
+        `匹配度：${ctx.matchRate}%`,
+        `置信度：${ctx.confidence}%`,
+        `汉明距离：${ctx.hamming}`,
+        `BER：${ctx.ber}`,
+        `嵌入策略：${ctx.strategy}`,
+        `结论：${conclusion}`
+      ].join("\n");
+
+      box.innerHTML = appState.evidenceText.replaceAll("\n", "<br/>");
+      status.className = appState.modelVerified && appState.contentVerified ? "status ok" : "status warn";
+      status.textContent = appState.modelVerified && appState.contentVerified ? "证据链完整" : "部分证据";
+      updateHomeEvidence(conclusion, ctx);
+    }
+
+    function updateHomeEvidence(message, ctx) {
+      const box = document.getElementById("homeEvidence");
+      if (!box) return;
+      box.innerHTML = `
+        ${message}<br/>
+        用户 ID：${ctx.userId}<br/>
+        模型 ID：${ctx.modelId}<br/>
+        来源 ID：${ctx.sourceId}<br/>
+        生成时间：${ctx.timestamp}<br/>
+        当前匹配度：${ctx.matchRate}%
+      `;
+    }
+
+    function copyEvidence() {
+      if (!appState.evidenceText) buildEvidenceChain();
+      navigator.clipboard?.writeText(appState.evidenceText);
+      alert("证据链内容已复制。若浏览器不支持自动复制，请直接选中文本复制。 ");
+    }
+
+    function exportEvidence() {
+      if (!appState.evidenceText) buildEvidenceChain();
+      const blob = new Blob([appState.evidenceText], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `MaskSource_Evidence_${Date.now()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function runQuickDetect() {
+      refreshContext(true);
+      setWorkflowStep(0);
+      const steps = [0, 1, 2, 3, 4];
+      steps.forEach((step, index) => {
+        setTimeout(() => setWorkflowStep(step), index * 350);
+      });
+      setTimeout(() => {
+        appState.modelVerified = true;
+        appState.contentVerified = true;
+        buildEvidenceChain();
+        document.getElementById("statDetect").textContent = String(Number(document.getElementById("statDetect").textContent) + 1);
+      }, 1900);
+    }
+
+    function selectModel(name) {
+      appState.selectedModel = name;
+      const dialogModel = document.getElementById("dialogModel");
+      if (dialogModel) dialogModel.value = name;
+      refreshContext(true);
+      alert(`已选择模型：${name}`);
+    }
+
+    function addDemoModel() {
+      const body = document.getElementById("modelTableBody");
+      const id = rand(100, 999);
+      const name = `MaskSource-VLM-${id}`;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${name}</td><td>Visual-Language</td><td><span class="status ok">Active</span></td><td>v1.0</td><td>${new Date().toISOString().slice(0, 10)}</td><td><button class="btn small secondary" onclick="selectModel('${name}')">选择</button></td>`;
+      body.appendChild(tr);
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = `${name} · Visual-Language`;
+      document.getElementById("dialogModel").appendChild(option);
+    }
+
+    function saveOwnerKeys() {
+      appState.ownerId = document.getElementById("ownerIdInput").value.trim() || appState.ownerId;
+      appState.promptKey = document.getElementById("promptKeyInput").value.trim() || appState.promptKey;
+      appState.imageKey = document.getElementById("imageKeyInput").value.trim() || appState.imageKey;
+      alert("所有权密钥已保存。后续模型验证将使用最新密钥。 ");
+    }
+
+    function simulateAttack(type) {
+      const attackMap = {
+        finetune: { label: "微调攻击", fine: 92, prune: 94, task: 98, identity: 96, quality: 93, capacity: 88 },
+        prune: { label: "结构化剪枝", fine: 95, prune: 89, task: 97, identity: 95, quality: 93, capacity: 87 },
+        quantize: { label: "量化压缩", fine: 94, prune: 92, task: 96, identity: 95, quality: 92, capacity: 86 },
+        rewrite: { label: "文本改写", fine: 97, prune: 94, task: 99, identity: 90, quality: 91, capacity: 82 },
+        copy: { label: "复制传播", fine: 97, prune: 94, task: 99, identity: 95, quality: 93, capacity: 87 }
+      };
+      const data = attackMap[type];
+      setMetric("fineTune", data.fine);
+      setMetric("prune", data.prune);
+      setMetric("task", data.task);
+      setMetric("identity", data.identity);
+      setMetric("quality", data.quality);
+      setMetric("capacity", data.capacity);
+      logLine("analysisLog", [
+        `[${nowText()}] 执行攻击模拟：${data.label}`,
+        `[${nowText()}] 模型侧水印仍可通过黑盒验证，成功率约 ${Math.min(data.fine, data.prune)}%`,
+        `[${nowText()}] 内容侧身份序列提取准确率调整为 ${data.identity}%`,
+        `[${nowText()}] 系统建议：保留双密钥验证和多比特身份序列联合判断，降低误判风险。`
+      ]);
+    }
+
+    function setMetric(prefix, value) {
+      const metric = document.getElementById(`${prefix}Metric`);
+      const bar = document.getElementById(`${prefix}Bar`);
+      if (metric) metric.textContent = `${value}%`;
+      if (bar) bar.style.setProperty("--w", `${value}%`);
+    }
+
+    function resetAnalysis() {
+      setMetric("fineTune", 97);
+      setMetric("prune", 94);
+      setMetric("task", 99);
+      setMetric("identity", 96);
+      setMetric("quality", 93);
+      setMetric("capacity", 88);
+      logLine("analysisLog", [`[${nowText()}] 已重置安全分析指标。`]);
+    }
+
+    function saveSettings() {
+      appState.settings.delta = Number(document.getElementById("deltaInput").value) || 2.0;
+      appState.settings.epsilon = Number(document.getElementById("epsilonInput").value) || 0.75;
+      appState.settings.threshold = Number(document.getElementById("thresholdInput").value) || 0.90;
+      document.getElementById("settingsTip").style.display = "block";
+    }
+
+    function searchConsole(value) {
+      const keyword = value.trim().toLowerCase();
+      if (!keyword) return;
+      if (["verify", "验证", "水印", "证据"].some(k => keyword.includes(k))) {
+        const btn = document.querySelector(".nav button:nth-child(4)");
+        showPage("verify", btn);
+      } else if (["model", "模型"].some(k => keyword.includes(k))) {
+        const btn = document.querySelector(".nav button:nth-child(3)");
+        showPage("models", btn);
+      } else if (["analysis", "攻击", "安全"].some(k => keyword.includes(k))) {
+        const btn = document.querySelector(".nav button:nth-child(5)");
+        showPage("analysis", btn);
+      }
+    }
+
+    function resetSessionState() {
+      appState.context = null;
+      appState.generatedText = "";
+      appState.modelVerified = false;
+      appState.contentVerified = false;
+      appState.evidenceText = "";
+      appState.selectedModel = "BLIP-Protected";
+
+      const safeSet = (id, value, prop = "innerHTML") => {
+        const el = document.getElementById(id);
+        if (el) el[prop] = value;
+      };
+
+      safeSet("dialogPrompt", "请描述图像内容，并生成一段版权保护说明。", "value");
+      safeSet("dialogFileName", "点击上传图片<br/>支持 PNG / JPG / JPEG");
+      safeSet("dialogResult", "");
+      safeSet("dialogLog", "暂无生成日志。");
+      safeSet("bitStream", "");
+      safeSet("modelVerifyFileName", "点击上传预定义后门图片<br/>并输入对应 Prompt");
+      safeSet("modelVerifyPrompt", "", "value");
+      safeSet("modelVerifyResult", "");
+      safeSet("contentVerifyText", "", "value");
+      safeSet("contentVerifyResult", "");
+      safeSet("evidenceBox", "完成模型水印验证或内容水印验证后，系统将在此生成包含模型归属、内容来源、用户身份、时间戳和检测指标的证据链摘要。");
+      safeSet("homeEvidence", "暂无检测任务。可在“多模态交互”中生成含水印内容，或在“水印验证”中执行模型/内容验证。");
+      safeSet("workflowStatus", "等待任务", "textContent");
+
+      const hideIds = ["dialogResult", "dialogLoading", "modelVerifyResult", "modelVerifyLoading", "contentVerifyResult", "contentVerifyLoading"];
+      hideIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = "none";
+      });
+
+      const dialogStatus = document.getElementById("dialogStatus");
+      if (dialogStatus) {
+        dialogStatus.className = "status warn";
+        dialogStatus.textContent = "等待生成";
+      }
+      const evidenceStatus = document.getElementById("evidenceStatus");
+      if (evidenceStatus) {
+        evidenceStatus.className = "status warn";
+        evidenceStatus.textContent = "等待验证";
+      }
+      const fileInputs = ["dialogImage", "modelWatermarkImage"];
+      fileInputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      document.querySelectorAll("#workflow .step").forEach(step => step.classList.remove("active-step"));
+      const firstNav = document.querySelector(".nav button:nth-child(1)");
+      if (firstNav) showPage("home", firstNav);
+    }
+
+    function startGuidedDemo() {
+      fillDialogDemo();
+      showPage("dialog", document.querySelector(".nav button:nth-child(2)"));
+      alert("已进入标准演示流程：请点击“开始生成并嵌入水印”。");
+    }
+
+    function fillDialogDemo() {
+      document.getElementById("dialogPrompt").value = "请基于上传图像生成一段 MaskSource 版权保护说明，并在生成文本中嵌入可用于后续版权追踪的身份序列。";
+      document.getElementById("dialogModel").value = "BLIP-Protected";
+      document.getElementById("dialogFileName").innerHTML = "演示样例：trigger_owner.png<br/>说明：该图像代表已嵌入 DWT 隐藏水印的预定义后门图片";
+    }
+
+    function copyGeneratedTextToVerify() {
+      if (!appState.generatedText) {
+        alert("请先在多模态交互页生成含水印内容。 ");
+        return;
+      }
+      document.getElementById("contentVerifyText").value = appState.generatedText;
+      showPage("verify", document.querySelector(".nav button:nth-child(4)"));
+    }
+
+    function fillContentDemoText() {
+      document.getElementById("contentVerifyText").value = appState.generatedText || "该内容由 MaskSource 授权视觉语言模型 BLIP-Protected 生成，系统在生成过程中嵌入了用户身份序列与模型标识信息，可用于后续版权追踪、模型归属判断与责任审计。";
+    }
+
+    function fillModelVerifyDemo() {
+      document.getElementById("modelVerifyPrompt").value = appState.promptKey;
+      document.getElementById("modelVerifyFileName").innerHTML = "演示样例：trigger_owner.png<br/>说明：该图像代表预定义后门图片，需与 Prompt Key 同时触发";
     }
 
     function logoutSystem() {
+      resetSessionState();
       document.getElementById("officialSite").style.display = "block";
       document.getElementById("loginScreen").style.display = "none";
       document.getElementById("dashboard").style.display = "none";
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+      document.body.classList.remove("admin-mode");
       window.scrollTo(0, 0);
     }
   </script>
