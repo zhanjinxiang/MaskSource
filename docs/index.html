@@ -986,7 +986,19 @@
       display: none;
     }
 
-    .admin-mode .hidden-admin {
+    .admin-mode .nav .hidden-admin {
+      display: block;
+    }
+
+    .admin-mode .card.hidden-admin {
+      display: block;
+    }
+
+    .page.hidden-admin {
+      display: none;
+    }
+
+    .page.hidden-admin.active {
       display: block;
     }
 
@@ -1328,6 +1340,7 @@
         <button onclick="showPage('dialog', this)">多模态交互</button>
         <button onclick="showPage('models', this)">模型管理</button>
         <button onclick="showPage('verify', this)">水印验证</button>
+        <button id="evidenceNavBtn" class="hidden-admin" onclick="showPage('evidence', this)">证据链管理</button>
         <button onclick="showPage('analysis', this)">安全分析</button>
         <button onclick="showPage('settings', this)">系统设置</button>
       </div>
@@ -1520,6 +1533,50 @@
         </div>
       </section>
 
+
+      <section class="page hidden-admin" id="evidence">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">证据链管理</h2>
+            <p class="page-desc">管理员可在此查看系统生成的版权证据链记录，包括模型归属、内容来源、用户身份、时间戳与验证状态，并支持导出当前证据链或历史记录。</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="panel-title"><h3>历史证据链记录</h3><span class="pill">Evidence Archive</span></div>
+          <table>
+            <thead>
+              <tr>
+                <th>生成时间</th>
+                <th>用户ID</th>
+                <th>模型ID</th>
+                <th>来源ID</th>
+                <th>验证结果</th>
+              </tr>
+            </thead>
+            <tbody id="evidenceTable">
+              <tr>
+                <td>暂无记录</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td><span class="status warn">等待生成</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="notice">点击历史记录表格中的任意一行，可在下方查看该条证据链详情。</div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <div class="panel-title"><h3>当前证据链详情</h3><span class="pill">Current Evidence</span></div>
+          <div id="evidenceDetail" class="evidence-box" style="white-space:pre-line;">暂无生成的证据链。请先完成内容水印验证或模型水印验证。</div>
+          <div class="action-row" style="margin-top:14px;">
+            <button class="btn secondary" onclick="downloadCurrentEvidence()">下载当前证据链</button>
+            <button class="btn secondary" onclick="downloadHistoryEvidence()">下载历史证据链</button>
+          </div>
+        </div>
+      </section>
+
       <section class="page" id="analysis">
         <div class="page-header">
           <div>
@@ -1594,6 +1651,34 @@
   </section>
 
   <script>
+
+    const defaultEvidenceHistory = [
+      {
+        time: "2026/5/9 10:42:18",
+        userId: "USR-demo-2048",
+        modelId: "MODEL-BLIPPRO-21",
+        sourceId: "SRC-92810421",
+        status: "通过",
+        detail: `MaskSource 版权证据链报告\n生成时间：2026-05-09 10:42:18\n模型确权：✔ 已完成\n内容溯源：✔ 已完成\n所有者：OWNER-MaskSource-Team\n模型名称：BLIP-Protected\n模型 ID：MODEL-BLIPPRO-21\n用户 ID：USR-demo-2048\n来源 ID：SRC-92810421\n匹配度：97.86%\n置信度：98.91%\n汉明距离：0.021\nBER：0.014\n结论：模型归属与内容来源均已完成验证，证据链闭环成立。`
+      },
+      {
+        time: "2026/5/8 16:27:09",
+        userId: "USR-audit-7163",
+        modelId: "MODEL-LLAVATRACE-18",
+        sourceId: "SRC-71639082",
+        status: "通过",
+        detail: `MaskSource 版权证据链报告\n生成时间：2026-05-08 16:27:09\n模型确权：○ 未执行\n内容溯源：✔ 已完成\n所有者：OWNER-MaskSource-Team\n模型名称：LLaVA-Trace\n模型 ID：MODEL-LLAVATRACE-18\n用户 ID：USR-audit-7163\n来源 ID：SRC-71639082\n匹配度：96.42%\n置信度：95.88%\n汉明距离：0.034\nBER：0.022\n结论：已完成内容来源追踪，可继续执行模型确权验证。`
+      },
+      {
+        time: "2026/5/7 09:15:33",
+        userId: "USR-user-0427",
+        modelId: "MODEL-VITGPT2-09",
+        sourceId: "SRC-42719036",
+        status: "通过",
+        detail: `MaskSource 版权证据链报告\n生成时间：2026-05-07 09:15:33\n模型确权：✔ 已完成\n内容溯源：○ 未执行\n所有者：OWNER-MaskSource-Team\n模型名称：ViT-GPT2-Lab\n模型 ID：MODEL-VITGPT2-09\n用户 ID：USR-user-0427\n来源 ID：SRC-42719036\n匹配度：94.72%\n置信度：98.12%\n汉明距离：0.041\nBER：0.026\n结论：模型所有权验证通过，可作为模型归属证明。`
+      }
+    ];
+
     const appState = {
       role: "User",
       username: "guest",
@@ -1609,7 +1694,8 @@
       context: null,
       modelVerified: false,
       contentVerified: false,
-      evidenceText: ""
+      evidenceText: "",
+      evidenceHistory: JSON.parse(JSON.stringify(defaultEvidenceHistory))
     };
 
     function openLogin() {
@@ -1652,6 +1738,8 @@
         document.getElementById("loginScreen").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
         document.body.classList.toggle("admin-mode", appState.role === "Admin");
+        const evidenceBtn = document.getElementById("evidenceNavBtn");
+        if (evidenceBtn) evidenceBtn.style.display = appState.role === "Admin" ? "block" : "none";
         document.getElementById("avatarLetter").textContent = appState.role === "Admin" ? "A" : "U";
         document.getElementById("userChipText").textContent = `${appState.username} · ${appState.role}`;
         error.style.display = "none";
@@ -1679,11 +1767,16 @@
     }
 
     function showPage(pageId, button) {
+      if (pageId === "evidence" && appState.role !== "Admin") {
+        pageId = "home";
+        button = document.querySelector(".nav button:nth-child(1)");
+      }
       const pages = document.querySelectorAll(".page");
       const navButtons = document.querySelectorAll(".nav button");
       pages.forEach(page => page.classList.remove("active"));
       navButtons.forEach(nav => nav.classList.remove("active"));
-      document.getElementById(pageId).classList.add("active");
+      const targetPage = document.getElementById(pageId);
+      if (targetPage) targetPage.classList.add("active");
       if (button) button.classList.add("active");
       window.scrollTo(0, 0);
     }
@@ -1988,6 +2081,17 @@
       box.innerHTML = appState.evidenceText.replaceAll("\n", "<br/>");
       status.className = appState.modelVerified && appState.contentVerified ? "status ok" : "status warn";
       status.textContent = appState.modelVerified && appState.contentVerified ? "证据链完整" : "部分证据";
+      const detail = document.getElementById("evidenceDetail");
+      if (detail) detail.textContent = appState.evidenceText;
+      appState.evidenceHistory.unshift({
+        time: nowText(),
+        userId: ctx.userId,
+        modelId: ctx.modelId,
+        sourceId: ctx.sourceId,
+        status: "通过",
+        detail: appState.evidenceText
+      });
+      renderEvidenceHistory();
       updateHomeEvidence(conclusion, ctx);
     }
 
@@ -2116,14 +2220,17 @@
     function searchConsole(value) {
       const keyword = value.trim().toLowerCase();
       if (!keyword) return;
-      if (["verify", "验证", "水印", "证据"].some(k => keyword.includes(k))) {
+      if (["evidence", "证据链管理", "历史证据"].some(k => keyword.includes(k)) && appState.role === "Admin") {
+        const btn = document.getElementById("evidenceNavBtn");
+        showPage("evidence", btn);
+      } else if (["verify", "验证", "水印", "证据"].some(k => keyword.includes(k))) {
         const btn = document.querySelector(".nav button:nth-child(4)");
         showPage("verify", btn);
       } else if (["model", "模型"].some(k => keyword.includes(k))) {
         const btn = document.querySelector(".nav button:nth-child(3)");
         showPage("models", btn);
       } else if (["analysis", "攻击", "安全"].some(k => keyword.includes(k))) {
-        const btn = document.querySelector(".nav button:nth-child(5)");
+        const btn = document.querySelector(".nav button:nth-child(6)");
         showPage("analysis", btn);
       }
     }
@@ -2135,6 +2242,7 @@
       appState.contentVerified = false;
       appState.evidenceText = "";
       appState.selectedModel = "BLIP-Protected";
+      appState.evidenceHistory = JSON.parse(JSON.stringify(defaultEvidenceHistory));
 
       const safeSet = (id, value, prop = "innerHTML") => {
         const el = document.getElementById(id);
@@ -2154,6 +2262,7 @@
       safeSet("evidenceBox", "完成模型水印验证或内容水印验证后，系统将在此生成包含模型归属、内容来源、用户身份、时间戳和检测指标的证据链摘要。");
       safeSet("homeEvidence", "暂无检测任务。可在“多模态交互”中生成含水印内容，或在“水印验证”中执行模型/内容验证。");
       safeSet("workflowStatus", "等待任务", "textContent");
+      safeSet("evidenceDetail", "暂无生成的证据链。请先完成内容水印验证或模型水印验证。", "textContent");
 
       const hideIds = ["dialogResult", "dialogLoading", "modelVerifyResult", "modelVerifyLoading", "contentVerifyResult", "contentVerifyLoading"];
       hideIds.forEach(id => {
@@ -2176,6 +2285,7 @@
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
+      renderEvidenceHistory();
       document.querySelectorAll("#workflow .step").forEach(step => step.classList.remove("active-step"));
       const firstNav = document.querySelector(".nav button:nth-child(1)");
       if (firstNav) showPage("home", firstNav);
@@ -2211,6 +2321,60 @@
       document.getElementById("modelVerifyFileName").innerHTML = "演示样例：trigger_owner.png<br/>说明：该图像代表预定义后门图片，需与 Prompt Key 同时触发";
     }
 
+
+    function renderEvidenceHistory() {
+      const table = document.getElementById("evidenceTable");
+      if (!table) return;
+      if (!appState.evidenceHistory || appState.evidenceHistory.length === 0) {
+        table.innerHTML = `<tr><td>暂无记录</td><td>-</td><td>-</td><td>-</td><td><span class="status warn">等待生成</span></td></tr>`;
+        return;
+      }
+      table.innerHTML = appState.evidenceHistory.map((item, index) => `
+        <tr onclick="showEvidenceDetail(${index})" style="cursor:pointer;">
+          <td>${item.time}</td>
+          <td>${item.userId}</td>
+          <td>${item.modelId}</td>
+          <td>${item.sourceId}</td>
+          <td><span class="status ok">${item.status}</span></td>
+        </tr>
+      `).join("");
+    }
+
+    function showEvidenceDetail(index) {
+      const item = appState.evidenceHistory[index];
+      const detail = document.getElementById("evidenceDetail");
+      if (item && detail) detail.textContent = item.detail;
+    }
+
+    function downloadTextFile(filename, content) {
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = 网站.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      网站.revokeObjectURL(url);
+    }
+
+    function downloadCurrentEvidence() {
+      if (!appState.evidenceText) {
+        alert("当前暂无可下载的证据链。");
+        return;
+      }
+      downloadTextFile(`MaskSource_Current_Evidence_${Date.now()}.txt`, appState.evidenceText);
+    }
+
+    function downloadHistoryEvidence() {
+      if (!appState.evidenceHistory || appState.evidenceHistory.length === 0) {
+        alert("暂无历史证据链可下载。");
+        return;
+      }
+      const content = appState.evidenceHistory.map((item, idx) => `【记录 ${idx + 1}】\n${item.detail}`).join("\n\n------------------------------\n\n");
+      downloadTextFile(`MaskSource_Evidence_History_${Date.now()}.txt`, content);
+    }
+
     function logoutSystem() {
       resetSessionState();
       document.getElementById("officialSite").style.display = "block";
@@ -2219,6 +2383,8 @@
       document.getElementById("username").value = "";
       document.getElementById("password").value = "";
       document.body.classList.remove("admin-mode");
+      const evidenceBtn = document.getElementById("evidenceNavBtn");
+      if (evidenceBtn) evidenceBtn.style.display = "none";
       window.scrollTo(0, 0);
     }
   </script>
